@@ -77,7 +77,58 @@
         <!-- /.container-fluid -->
     </nav>
 
+
+
+    <!-- Test Map -->
+
+
+    <div id="testMap" data-bind="mapBinding: map" style="height: 200px;">
+    </div>
+
+     <!-- /Map -->
+
+          <!-- List view -->
+
+    <h2>LOCATIONS</h2>
+
+<table>
+    <thead><tr>
+        <th>Location Name</th><th>Street</th><th>Category</th><th></th>
+    </tr></thead>
+
+    <tbody data-bind="foreach: locationList">
+        <tr>
+             <td data-bind="text: name" ></td>
+             <td data-bind="text: street" ></td>
+             <td data-bind="text: categories[0]" ></td>
+        </tr>    
+    </tbody>
+</table>
+
+     <!-- /Listview  -->
+
+               <!-- List view -->
+
+    <h2>SEARCH LOCATIONS</h2>
+
+<table>
+    <thead><tr>
+        <th>Location Name</th><th>Street</th><th>Category</th><th></th>
+    </tr></thead>
+
+    <tbody data-bind="foreach: searchList">
+        <tr>
+             <td data-bind="text: name" ></td>
+             <td data-bind="text: street" ></td>
+             <td data-bind="text: categories[0]" ></td>
+        </tr>    
+    </tbody>
+</table>
+
+     <!-- /Listview  -->
+
      <!-- Map -->
+
 
     <div id="hampdenMap">
     </div>
@@ -552,57 +603,18 @@
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
 
-     <!-- Knockout.js and associated app -->
-    <script src="js/knockout-3.3.0.js"></script>
-    <script src="js/app.js"></script>
-
-    <!-- Google Map --> 
-
+    <!-- Google Map API --> 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
     <!-- API KEY  ?key=AIzaSyA813jCip3GPvTY7rWJAdnRXH_cch6SUfw  -->
 
-
-    <script type="text/javascript">
-      
-      function mapMaker() {
-
-        var addresses = ['3646 Elm Ave, Baltimore, MD', '3400 Falls Road, Baltimore, MD']
+    <!-- Knockout.js and associated app -->
+    <script src="js/knockout-3.3.0.js"></script>
+    <script src="js/app.js"></script>
 
 
-        // , 'Medellin, Colombia', 'Phnom Penh, Cambodia','Hamburg, Germany', 'Mannheim, Germany', 'Islamabad, Pakistan', 'Istanbul, Turkey', 'Crete, Greece', 'Tegucigalpa, Honduras', 'Bello Horizonte, Brazil', 'Santiago, Chile', 'North Dakota', 'Key West, FL', 'Nimes, France', 'Sienna, Italy', 'Cartagena, Colombia', 'New York, NY', 'Los Angeles, CA', 'San Diego, CA', 'Tulum, Mexico', 'Esmeraldas, Ecuador', 'Riobamba, Ecuador', 'Sheffield, England', 'Mostar, Bosnia', 'Sarajevo, Bosnia', 'Bucharest, Romania', 'Karachi, Pakistan', 'Quetta, Pakistan', 'Peshawar, Pakistan', 'Chitral, Pakistan','Shanghai, China'];
-
-        var mapOptions = {
-          center: { lat: 39.331280, lng: -76.631524},
-          zoom: 16
-        };
-        var map = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
-
-        for (var x = 0; x < addresses.length; x++) {
-            $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false', null, function (data) {
-                var p = data.results[0].geometry.location;
-                var latlng = new google.maps.LatLng(p.lat, p.lng);
-                var placeName = data.results[0].address_components[0].long_name;
-
-                new google.maps.Marker({
-                    animation: google.maps.Animation.DROP,
-                    position: latlng,
-                    map: map,
-                    title: placeName,
-                   });
-            });
-
-        } 
 
 
-      };
-
-
-      $(document).ready(function() {
-            mapMaker();
-        })
-     
-     
-    </script>
+   
 
 </body>
 
