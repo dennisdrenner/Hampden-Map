@@ -17,7 +17,6 @@ var Location = function (data) {
     this.streetNumber = data.streetNumber;
     this.street = data.street;
     this.categories = data.categories;  //categories is an array 
-   // this.display = true; 
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
@@ -91,48 +90,33 @@ function AppViewModel() {
     //List of all locations in the model
     self.locationList = ko.observableArray([]);
 
-    //Iterate through locations array, creating new location objects and 
-    //adding them to the locationList observable array
+    //Iterate through locations array, adding location objects to locationList observable array
     locations.forEach(function(locationObj) {
         self.locationList.push(new Location(locationObj));
         //console.log("LL:", self.locationList());
     });    
 
-    //List of addresses only for use in the calculating Google map markers 
+    //List of addresses
     self.addressList = ko.observableArray([]);
 
-    //Iterate through locationList, adding addresses to address list 
+    //Iterate through locations array, adding addresses to address list 
     self.locationList().forEach(function(locationObj) {
         self.addressList.push(locationObj.address());
     });    
  
     //Array of search results (subset of locationList)
-   //self.searchList = ko.observableArray([]);
+    self.searchList = ko.observableArray([]);
 
     //Iterate through locationList and find matches for search box entry 
-    //self.searchLocations = ko.computed(function() {
-     // self.searchList([]); 
-
-
-    self.displayLocation = ko.computed(function() {
+    self.searchLocations = ko.computed(function() {
+      self.searchList([]); 
       for (i=0; i<self.locationList().length;i++){
-        //if searchBox text is a match for part of the name, set display == true on location object
         if (self.locationList()[i].name.search(self.searchBox()) !== -1) {
-          self.locationList()[i].display = ko.observable(true); 
-          console.log(self.locationList()[i].display(), self.locationList()[i].name);
+          self.searchList.push(self.locationList()[i]);
         }
-        //else set display = false 
-        else { 
-          self.locationList()[i].display = ko.observable(false); 
-          console.log(self.locationList()[i].display(), self.locationList()[i].name);
-        } 
-     //     self.searchList.push(self.locationList()[i]);
-        }
+      }
+      return self.searchList; 
     });
-      
-// return self.searchList; 
-     
-    
 
     // ko.bindingHandlers.mapBinding = {
     //   init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
@@ -154,8 +138,7 @@ function AppViewModel() {
 
     function mapMaker(addresses) {
       for (var x = 0; x < addresses.length; x++) {
-          $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+
-            '&sensor=false', null, function (data) {
+          $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&sensor=false', null, function (data) {
               var p = data.results[0].geometry.location;
               var latlng = new google.maps.LatLng(p.lat, p.lng);
               var placeName = data.results[0].address_components[0].long_name;
@@ -167,10 +150,11 @@ function AppViewModel() {
                   title: placeName,
               });
           });
-      } 
-    };
 
-    mapMaker(self.addressList());
+      } 
+};
+
+    mapMaker(self.searchList());
 
 }
 
@@ -187,6 +171,8 @@ ko.applyBindings(new AppViewModel());
 var addresses = ['3646 Elm Ave, Baltimore, MD', '3400 Falls Road, Baltimore, MD',
    '1005 W. 36th Street, Baltimore, MD'];
 
+//console.log(AppViewModel.addressList);
+  // , 'Medellin, Colombia', 'Phnom Penh, Cambodia','Hamburg, Germany', 'Mannheim, Germany', 'Islamabad, Pakistan', 'Istanbul, Turkey', 'Crete, Greece', 'Tegucigalpa, Honduras', 'Bello Horizonte, Brazil', 'Santiago, Chile', 'North Dakota', 'Key West, FL', 'Nimes, France', 'Sienna, Italy', 'Cartagena, Colombia', 'New York, NY', 'Los Angeles, CA', 'San Diego, CA', 'Tulum, Mexico', 'Esmeraldas, Ecuador', 'Riobamba, Ecuador', 'Sheffield, England', 'Mostar, Bosnia', 'Sarajevo, Bosnia', 'Bucharest, Romania', 'Karachi, Pakistan', 'Quetta, Pakistan', 'Peshawar, Pakistan', 'Chitral, Pakistan','Shanghai, China'];
 
 
 
