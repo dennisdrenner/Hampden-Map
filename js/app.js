@@ -17,7 +17,7 @@ var Location = function (data) {
     this.streetNumber = data.streetNumber;
     this.street = data.street;
     this.categories = data.categories;  //categories is an array 
-   // this.display = true; 
+    this.display = ko.observable(true); 
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
@@ -118,13 +118,13 @@ function AppViewModel() {
       for (i=0; i<self.locationList().length;i++){
         //if searchBox text is a match for part of the name, set display == true on location object
         if (self.locationList()[i].name.search(self.searchBox()) !== -1) {
-          self.locationList()[i].display = ko.observable(true); 
-          console.log(self.locationList()[i].display(), self.locationList()[i].name);
+          self.locationList()[i].display(true); 
+          //console.log(self.locationList()[i].display(), self.locationList()[i].name);
         }
         //else set display = false 
         else { 
-          self.locationList()[i].display = ko.observable(false); 
-          console.log(self.locationList()[i].display(), self.locationList()[i].name);
+          self.locationList()[i].display(false); 
+          //console.log(self.locationList()[i].display(), self.locationList()[i].name);
         } 
      //     self.searchList.push(self.locationList()[i]);
         }
