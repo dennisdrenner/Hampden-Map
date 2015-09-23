@@ -18,8 +18,9 @@ var Location = function (data) {
     this.street = data.street;
     this.categories = data.categories;  //categories is an array 
     this.display = ko.observable(true); 
-    this.latlng = '';
     this.placeName = '';
+    this.latLng = {};
+    this.marker = {};
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
@@ -35,8 +36,8 @@ var locations = [
           name: "Fraziers",
           streetNumber: "1400",
           street: "W. 36th",
-          categories: ["bar", "restaurant"],
-          latLng : {}
+          categories: ["bar", "restaurant"]
+         
 
   },
 
@@ -44,8 +45,8 @@ var locations = [
           name: "Milagros",
           streetNumber: "1005",
           street: "W. 36th",
-          categories: ["shop"] ,
-          latLng : {}
+          categories: ["shop"] 
+         
 
   },
 
@@ -53,17 +54,15 @@ var locations = [
           name: "Milagros Neighbor",
           streetNumber: "1009",
           street: "W. 36th",
-          categories: ["shop"] ,
-          latLng : {} 
-
+          categories: ["shop"] 
+        
   },
 
    {
           name: "Charm City Headshots",
           streetNumber: "3646",
           street: "Elm Avenue",
-          categories: ["photographer"] ,
-          latLng : {}
+          categories: ["photographer"] 
 
   },
 ]
@@ -119,39 +118,42 @@ function AppViewModel() {
     //define new google map object 
     var map = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
 
-  
+
+    function setLatLng (locationObj, latLng, marker, x) {
+        console.log(locationObj, latLng, marker, x);
+        locationObj.latLng = latLng; 
+        locationObj.marker = marker; 
+    }
+
+    function setLatLngFactory (locationObj, latLng, marker, x) {
+      return setLatLng(locationObj, latLng, marker);
+    };
+    
     //Iterate through locationObjList (array of all location objects), calculate latlng and placeNames based on their
     //addresses, and create map markers -- adding all of these as properties to the object 
-   
-
     function mapMaker() {
       for (var x = 0; x < self.locationObjList().length; x++) {
-      
+    
       $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
             '&sensor=false', null, function (data) {
               var p = data.results[0].geometry.location;
-              var newLatLng = new google.maps.LatLng(p.lat, p.lng);
-
-              //this line prints '4' every time, not 0,1,2,3 as i'd expect 
-              console.log(x);
-
-              //line below throws an error 
-             // self.locationObjList()[x].latlng(newLatng);
-          
+              var latLng = new google.maps.LatLng(p.lat, p.lng);
               var marker = 
                 new google.maps.Marker({
                     animation: google.maps.Animation.DROP,
-                    position: newLatLng,
-                    map: map,
-                   
+                    position: latLng,
+                    map: map, 
                 });
-
+              //function factory. lock value of self.locationObjList()[x] into a closure 
+              setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
             });        
 
           };
+      
  
       };
        mapMaker();
+       console.log("LOL", self.locationObjList());
 
     };
 
