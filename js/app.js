@@ -18,21 +18,15 @@ var Location = function (data) {
     this.street = data.street;
     this.categories = data.categories;  //categories is an array 
     this.display = ko.observable(true); 
+    this.latlng = '';
+    this.placeName = '';
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
         + self.city + ", " + self.state + " " + self.zipcode;
     }
 
-    // this.level = ko.computed(function() {
-    //     var level; 
-    //     if (this.clickCount() < 10) {return level = 'infant'};
-    //     if (this.clickCount() < 20) {return level = 'teen'};
-    //     if (this.clickCount() < 30) {return level = 'adult'};
-    //     if (this.clickCount() >= 30) {return level = 'cryptkeeper'}; 
-    //     console.log(level);
-    // }, this);
-
+  
 };
 
 var locations = [
@@ -41,7 +35,8 @@ var locations = [
           name: "Fraziers",
           streetNumber: "1400",
           street: "W. 36th",
-          categories: ["bar", "restaurant"] 
+          categories: ["bar", "restaurant"],
+          latLng : {}
 
   },
 
@@ -49,7 +44,17 @@ var locations = [
           name: "Milagros",
           streetNumber: "1005",
           street: "W. 36th",
-          categories: ["shop"] 
+          categories: ["shop"] ,
+          latLng : {}
+
+  },
+
+   {
+          name: "Milagros Neighbor",
+          streetNumber: "1009",
+          street: "W. 36th",
+          categories: ["shop"] ,
+          latLng : {} 
 
   },
 
@@ -57,27 +62,12 @@ var locations = [
           name: "Charm City Headshots",
           streetNumber: "3646",
           street: "Elm Avenue",
-          categories: ["photographer"] 
+          categories: ["photographer"] ,
+          latLng : {}
 
   },
 ]
 
-
-
-// var ViewModel = function () {
-//     var self = this; 
-
-//     self.locationList = ko.observableArray([]);
-
-//     locations.forEach(function(locationObj) {
-//         self.locationList.push(new Location(locationObj));
-//     });
-
-//     self.currentCat = ko.observable(self.catList()[1]);
-
-//     setCurrentCat = function (cat) {
-//        self.currentCat(cat);
-//     };
 
 
 /* ----------------------- VIEW MODEL ----------------------- */
@@ -89,90 +79,86 @@ function AppViewModel() {
     this.searchBox =  ko.observable("Enter search text");
 
     //List of all locations in the model
-    self.locationList = ko.observableArray([]);
+    self.locationObjList = ko.observableArray([]);
 
     //Iterate through locations array, creating new location objects and 
-    //adding them to the locationList observable array
+    //adding them to the locationObjList observable array
+
     locations.forEach(function(locationObj) {
-        self.locationList.push(new Location(locationObj));
-        //console.log("LL:", self.locationList());
+        self.locationObjList.push(new Location(locationObj));
     });    
 
     //List of addresses only for use in the calculating Google map markers 
     self.addressList = ko.observableArray([]);
 
     //Iterate through locationList, adding addresses to address list 
-    self.locationList().forEach(function(locationObj) {
+    self.locationObjList().forEach(function(locationObj) {
         self.addressList.push(locationObj.address());
     });    
- 
-    //Array of search results (subset of locationList)
-   //self.searchList = ko.observableArray([]);
-
-    //Iterate through locationList and find matches for search box entry 
-    //self.searchLocations = ko.computed(function() {
-     // self.searchList([]); 
-
 
     self.displayLocation = ko.computed(function() {
-      for (i=0; i<self.locationList().length;i++){
+      for (i=0; i<self.locationObjList().length;i++){
         //if searchBox text is a match for part of the name, set display == true on location object
-        if (self.locationList()[i].name.search(self.searchBox()) !== -1) {
-          self.locationList()[i].display(true); 
-          //console.log(self.locationList()[i].display(), self.locationList()[i].name);
+        if (self.locationObjList()[i].name.search(self.searchBox()) !== -1) {
+          self.locationObjList()[i].display(true); 
         }
         //else set display = false 
         else { 
-          self.locationList()[i].display(false); 
-          //console.log(self.locationList()[i].display(), self.locationList()[i].name);
+          self.locationObjList()[i].display(false); 
         } 
-     //     self.searchList.push(self.locationList()[i]);
-        }
+      }
     });
       
-// return self.searchList; 
-     
-    
 
-    // ko.bindingHandlers.mapBinding = {
-    //   init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-    //       // This will be called when the binding is first applied to an element
-    //       // Set up any initial state, event handlers, etc. here
-    //   },
-    //   update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-    //       // This will be called once when the binding is first applied to an element,
-    //       // and again whenever any observables/computeds that are accessed change
-    //       // Update the DOM element based on the supplied values here.
-    //   }
-    // };
-
+    //set up data for google map object defined below 
     var mapOptions = {
     center: { lat: 39.331280, lng: -76.631524},
     zoom: 16
     };
+
+    //define new google map object 
     var map = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
 
-    function mapMaker(addresses) {
-      for (var x = 0; x < addresses.length; x++) {
-          $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+
+  
+    //Iterate through locationObjList (array of all location objects), calculate latlng and placeNames based on their
+    //addresses, and create map markers -- adding all of these as properties to the object 
+   
+
+    function mapMaker() {
+      for (var x = 0; x < self.locationObjList().length; x++) {
+      
+      $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
             '&sensor=false', null, function (data) {
               var p = data.results[0].geometry.location;
-              var latlng = new google.maps.LatLng(p.lat, p.lng);
-              var placeName = data.results[0].address_components[0].long_name;
+              var newLatLng = new google.maps.LatLng(p.lat, p.lng);
 
-              new google.maps.Marker({
-                  animation: google.maps.Animation.DROP,
-                  position: latlng,
-                  map: map,
-                  title: placeName,
-              });
-          });
-      } 
+              //this line prints '4' every time, not 0,1,2,3 as i'd expect 
+              console.log(x);
+
+              //line below throws an error 
+             // self.locationObjList()[x].latlng(newLatng);
+          
+              var marker = 
+                new google.maps.Marker({
+                    animation: google.maps.Animation.DROP,
+                    position: newLatLng,
+                    map: map,
+                   
+                });
+
+            });        
+
+          };
+ 
+      };
+       mapMaker();
+
     };
 
-    mapMaker(self.addressList());
+   
 
-}
+
+
 
 // Activates knockout.js
 ko.applyBindings(new AppViewModel());
