@@ -168,6 +168,14 @@ function AppViewModel() {
                         position: latLng,
                         map: map, 
                   });
+
+                  var infowindow = new google.maps.InfoWindow({
+                    content:  "<p>SAMPLE CONTENT</p>" // self.locationObjList()[x].content(); 
+                  });
+
+                  marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                  });
                 
                   //console.log(x);
                   //setLatLng(self.locationObjList()[x],latLng, marker, x);
@@ -180,6 +188,35 @@ function AppViewModel() {
           }(x));
       };
     }
+
+
+    // TO DO: Use forEach instead of loop to implement mapMaker function 
+
+    // self.locationObjList().forEach(function (x) {
+    //       $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
+    //             '&sensor=false', null, function (data) {
+    //               var p = data.results[0].geometry.location;
+    //               var latLng = new google.maps.LatLng(p.lat, p.lng);
+    //                 var marker = 
+    //                   new google.maps.Marker({
+    //                       animation: google.maps.Animation.DROP,
+    //                       position: latLng,
+    //                       map: map, 
+    //                 });
+                
+    //               //console.log(x);
+    //               //setLatLng(self.locationObjList()[x],latLng, marker, x);
+    //               //setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
+
+    //               //attach latLng and marker to location objects as properties
+    //               self.locationObjList()[x].latLng = latLng;
+    //               self.locationObjList()[x].marker = marker;
+    //         });
+    //   });
+
+    
+
+
 
     mapMaker();
     //console.log(self.locationObjList());
