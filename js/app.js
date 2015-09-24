@@ -22,6 +22,7 @@ var Location = function (data) {
     this.latLng = {};
     this.marker = {};
     this.marker.setMap = '';
+    this.summary = data.summary; 
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
@@ -39,7 +40,8 @@ var locations = [
           name: "Fraziers",
           streetNumber: "1400",
           street: "W. 36th",
-          categories: ["bar", "restaurant"]
+          categories: ["bar", "restaurant"],
+          summary: "One of the oldest and friendliest neighborhood bars and restaurants"
          
 
   },
@@ -48,7 +50,8 @@ var locations = [
           name: "Milagros",
           streetNumber: "1005",
           street: "W. 36th",
-          categories: ["shop"] 
+          categories: ["shop"],
+          summary: "Great international gifts"
          
 
   },
@@ -57,7 +60,8 @@ var locations = [
           name: "Milagros Neighbor",
           streetNumber: "1009",
           street: "W. 36th",
-          categories: ["shop"] 
+          categories: ["shop"], 
+          summary: "Wierd neighbor. Smells of cats"
         
   },
 
@@ -65,7 +69,8 @@ var locations = [
           name: "Charm City Headshots",
           streetNumber: "3646",
           street: "Elm Avenue",
-          categories: ["photographer"] 
+          categories: ["photographer"],
+          summary: "Headshot photographer."
 
   },
 
@@ -73,7 +78,8 @@ var locations = [
           name: "Random House",
           streetNumber: "3600",
           street: "Falls Road",
-          categories: ["home"] 
+          categories: ["home"],
+          summary: "Potential meth lab"
 
   },
 ]
@@ -169,8 +175,9 @@ function AppViewModel() {
                         map: map, 
                   });
 
+                
                   var infowindow = new google.maps.InfoWindow({
-                    content:  "<p>SAMPLE CONTENT</p>" // self.locationObjList()[x].content(); 
+                    content: "<p>" + self.locationObjList()[x].summary + "</p>"
                   });
 
                   marker.addListener('click', function() {
