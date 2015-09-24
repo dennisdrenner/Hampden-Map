@@ -3,7 +3,7 @@
 
 /* ----------------------- MODEL ----------------------- */
 
-//Constructor function for pointOfInterest object (i.e. locations in Hampden)
+//Constructor function for Location objects (i.e. locations in Hampden)
 
 var Location = function (data) {
 
@@ -21,6 +21,7 @@ var Location = function (data) {
     this.placeName = '';
     this.latLng = {};
     this.marker = {};
+    this.marker.setMap = '';
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
@@ -29,6 +30,8 @@ var Location = function (data) {
 
   
 };
+
+//Initial location info to be manually input 
 
 var locations = [
 
@@ -65,6 +68,14 @@ var locations = [
           categories: ["photographer"] 
 
   },
+
+  {
+          name: "Random House",
+          streetNumber: "3600",
+          street: "Falls Road",
+          categories: ["home"] 
+
+  },
 ]
 
 
@@ -82,28 +93,32 @@ function AppViewModel() {
 
     //Iterate through locations array, creating new location objects and 
     //adding them to the locationObjList observable array
-
     locations.forEach(function(locationObj) {
         self.locationObjList.push(new Location(locationObj));
     });    
 
     //List of addresses only for use in the calculating Google map markers 
-    self.addressList = ko.observableArray([]);
+    //self.addressList = ko.observableArray([]);
 
     //Iterate through locationList, adding addresses to address list 
-    self.locationObjList().forEach(function(locationObj) {
-        self.addressList.push(locationObj.address());
-    });    
+    // self.locationObjList().forEach(function(locationObj) {
+    //     self.addressList.push(locationObj.address());
+    // });    
 
+
+    //Find locations which are a match for input search text 
     self.displayLocation = ko.computed(function() {
       for (i=0; i<self.locationObjList().length;i++){
         //if searchBox text is a match for part of the name, set display == true on location object
         if (self.locationObjList()[i].name.search(self.searchBox()) !== -1) {
           self.locationObjList()[i].display(true); 
+           if (self.locationObjList()[i].marker.setMap) { self.locationObjList()[i].marker.setMap(map); }
+
         }
-        //else set display = false 
+        //else set display = false and remove marker from the map 
         else { 
-          self.locationObjList()[i].display(false); 
+          self.locationObjList()[i].display(false);
+            if (self.locationObjList()[i].marker.setMap) { self.locationObjList()[i].marker.setMap(null); }
         } 
       }
     });
@@ -111,9 +126,9 @@ function AppViewModel() {
 
     //set up data for google map object defined below 
     var mapOptions = {
-    center: { lat: 39.331280, lng: -76.631524},
-    zoom: 16
-    };
+      center: { lat: 39.331280, lng: -76.631524},
+      zoom: 16
+      };
 
     //define new google map object 
     var map = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
