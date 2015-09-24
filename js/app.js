@@ -134,21 +134,25 @@ function AppViewModel() {
     function mapMaker() {
       for (var x = 0; x < self.locationObjList().length; x++) {
     
-      $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
-            '&sensor=false', null, function (data) {
-              var p = data.results[0].geometry.location;
-              var latLng = new google.maps.LatLng(p.lat, p.lng);
-              var marker = 
-                new google.maps.Marker({
-                    animation: google.maps.Animation.DROP,
-                    position: latLng,
-                    map: map, 
-                });
-              //function factory. lock value of self.locationObjList()[x] into a closure 
-              setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
-            });        
+        (function (x) {
+          $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
+                '&sensor=false', null, function (data) {
+                  var p = data.results[0].geometry.location;
+                  var latLng = new google.maps.LatLng(p.lat, p.lng);
 
-          };
+                  var marker = 
+                    new google.maps.Marker({
+                        animation: google.maps.Animation.DROP,
+                        position: latLng,
+                        map: map, 
+                    });
+                  //function factory. lock value of self.locationObjList()[x] into a closure 
+                  console.log(x);
+                  setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
+                });        
+        }(x));
+
+      };
       
  
       };
