@@ -119,41 +119,55 @@ function AppViewModel() {
     var map = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
 
 
-    function setLatLng (locationObj, latLng, marker, x) {
-        console.log(locationObj, latLng, marker, x);
-        locationObj.latLng = latLng; 
-        locationObj.marker = marker; 
-    }
-
-    function setLatLngFactory (locationObj, latLng, marker, x) {
-      return function () {
-          setLatLng(locationObj, latLng, marker);
-      };
-    }
+  
+    // //helper function for mapMaker function. create closure for setLatLng function
+    // function setLatLngFactory (locationObj, latLng, marker, x) {
+    //   return function () {
+    //       setLatLng(locationObj, latLng, marker);
+    //   };
+    // }
     
-    //Iterate through locationObjList (array of all location objects), calculate latlng and placeNames based on their
-    //addresses, and create map markers -- adding all of these as properties to the object 
+    //Iterate through locationObjList (array of all location objects), pull out the addresses and use these
+    //to calculate latLng info from Google, create a new map marker, and add latLng and marker as properties
+    // to the location object 
+
     function mapMaker() {
+
+      // //helper function for mapMaker function to set latLng and marker on location object
+      // function setLatLng (locationObj, latLng, marker) {
+      //     //console.log(locationObj, latLng, marker, x);
+      //     locationObj.latLng = latLng; 
+      //     locationObj.marker = marker; 
+      // }
+
       for (var x = 0; x < self.locationObjList().length; x++) {
 
-    
-      $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
-            '&sensor=false', null, function (data) {
-              var p = data.results[0].geometry.location;
-              var latLng = new google.maps.LatLng(p.lat, p.lng);
-              var marker = 
-                new google.maps.Marker({
-                    animation: google.maps.Animation.DROP,
-                    position: latLng,
-                    map: map, 
-              });
-              //function factory. lock value of self.locationObjList()[x] into a closure 
-              //setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
-            });        
-          };
+        (function (x) {
+          $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
+                '&sensor=false', null, function (data) {
+                  var p = data.results[0].geometry.location;
+                  var latLng = new google.maps.LatLng(p.lat, p.lng);
+                  var marker = 
+                    new google.maps.Marker({
+                        animation: google.maps.Animation.DROP,
+                        position: latLng,
+                        map: map, 
+                  });
+                
+                  //console.log(x);
+                  //setLatLng(self.locationObjList()[x],latLng, marker, x);
+                  //setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
+
+                  //attach latLng and marker to location objects as properties
+                  self.locationObjList()[x].latLng = latLng;
+                  self.locationObjList()[x].marker = marker;
+                });
+          }(x));
       };
+    }
 
     mapMaker();
+    //console.log(self.locationObjList());
     
     };
 
