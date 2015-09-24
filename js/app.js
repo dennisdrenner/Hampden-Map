@@ -126,13 +126,16 @@ function AppViewModel() {
     }
 
     function setLatLngFactory (locationObj, latLng, marker, x) {
-      return setLatLng(locationObj, latLng, marker);
-    };
+      return function () {
+          setLatLng(locationObj, latLng, marker);
+      };
+    }
     
     //Iterate through locationObjList (array of all location objects), calculate latlng and placeNames based on their
     //addresses, and create map markers -- adding all of these as properties to the object 
     function mapMaker() {
       for (var x = 0; x < self.locationObjList().length; x++) {
+
     
       $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
             '&sensor=false', null, function (data) {
@@ -143,18 +146,15 @@ function AppViewModel() {
                     animation: google.maps.Animation.DROP,
                     position: latLng,
                     map: map, 
-                });
+              });
               //function factory. lock value of self.locationObjList()[x] into a closure 
-              setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
+              //setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
             });        
-
           };
-      
- 
       };
-       mapMaker();
-       console.log("LOL", self.locationObjList());
 
+    mapMaker();
+    
     };
 
    
