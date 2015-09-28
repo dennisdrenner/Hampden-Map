@@ -132,7 +132,7 @@ function AppViewModel() {
 
     //set up data for google map object defined below 
     var mapOptions = {
-      center: { lat: 39.331280, lng: -76.631524},
+      center: { lat: 39.332769, lng: -76.635661},
       zoom: 16
       };
 
@@ -161,6 +161,21 @@ function AppViewModel() {
       //     locationObj.marker = marker; 
       // }
 
+      //var markerList = [];
+
+      // function closeWindows () {
+      //   markerList.forEach(function (marker) {
+      //     marker.infowindow.close();
+      //   });
+      // }
+
+      // var globalWindow = new google.maps.InfoWindow({
+      //               content: "GLOBAL INFO WINDOW",
+      //               maxWidth: 250,
+      //             });
+
+      var infoDiv = document.getElementById("infoDiv");
+
       for (var x = 0; x < self.locationObjList().length; x++) {
 
         (function (x) {
@@ -175,19 +190,24 @@ function AppViewModel() {
                         map: map, 
                   });
 
-                
-                  var infowindow = new google.maps.InfoWindow({
-                    content: "<p>" + self.locationObjList()[x].summary + "</p>"
+                  var infoWindow = new google.maps.InfoWindow({
+                    content: "<div id='infoWindow2'><p>" + self.locationObjList()[x].summary + "</p></div>",
+                    maxWidth: 250,
                   });
 
                   marker.addListener('click', function() {
-                    infowindow.open(map, marker);
-                  });
-                
-                  //console.log(x);
-                  //setLatLng(self.locationObjList()[x],latLng, marker, x);
-                  //setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
+                    //closeWindows(); 
+                    //globalWindow.content = self.locationObjList()[x].summary
+                    //globalWindow.open(map, marker);
+                    infoDiv.innerHTML = "<p> SUMMARY: " + self.locationObjList()[x].summary + "</p";
+                    console.log(self.locationObjList()[x].summary);
 
+                    // infoWindow.open(map, marker);
+                    // infoWindow.setPosition({lat: 39.333075, lng: -76.642093});
+                  });
+
+                  //markerList.push(marker);
+                 
                   //attach latLng and marker to location objects as properties
                   self.locationObjList()[x].latLng = latLng;
                   self.locationObjList()[x].marker = marker;
@@ -224,7 +244,7 @@ function AppViewModel() {
     
 
 
-
+    
     mapMaker();
     //console.log(self.locationObjList());
     
