@@ -29,6 +29,19 @@ var Location = function (data) {
         + self.city + ", " + self.state + " " + self.zipcode;
     }
 
+    self.bounce = function () {
+      //console.log('bouncing');
+      self.marker.setAnimation(google.maps.Animation.BOUNCE);
+      window.setTimeout(function () {
+        self.marker.setAnimation(null);
+      }, 2000);
+    }
+
+            // marker.setAnimation(google.maps.Animation.BOUNCE);
+            //         window.setTimeout(function () {
+            //           marker.setAnimation(null);
+            //         }, 2000);
+
   
 };
 
@@ -101,6 +114,7 @@ function AppViewModel() {
     //adding them to the locationObjList observable array
     locations.forEach(function(locationObj) {
         self.locationObjList.push(new Location(locationObj));
+
     });    
 
     //List of addresses only for use in the calculating Google map markers 
@@ -118,6 +132,8 @@ function AppViewModel() {
         //if searchBox text is a match for part of the name, set display == true on location object
         if (self.locationObjList()[i].name.search(self.searchBox()) !== -1) {
           self.locationObjList()[i].display(true); 
+          //marker.setMap does not exist when map is first initialized, so we run this check to 
+          //avoid errors, 
            if (self.locationObjList()[i].marker.setMap) { self.locationObjList()[i].marker.setMap(map); }
 
         }

@@ -95,7 +95,7 @@
     </tr></thead>
 
     <tbody data-bind="foreach: locationObjList">
-        <tr data-bind="visible: display">
+        <tr data-bind="visible: display, click: bounce,">
              <td data-bind="text: name" ></td>
              <td data-bind="text: street" ></td>
              <td data-bind="text: categories[0]" ></td>
@@ -116,7 +116,7 @@
     </tr></thead>
 
     <tbody data-bind="foreach: locationObjList">
-        <tr>
+        <tr data-bind="click: bounce">
              <td data-bind="text: name" ></td>
              <td data-bind="text: street" ></td>
              <td data-bind="text: categories[0]" ></td>
