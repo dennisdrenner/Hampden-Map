@@ -200,10 +200,13 @@ function AppViewModel() {
                     //globalWindow.content = self.locationObjList()[x].summary
                     //globalWindow.open(map, marker);
                     infoDiv.innerHTML = "<p> SUMMARY: " + self.locationObjList()[x].summary + "</p";
-                    console.log(self.locationObjList()[x].summary);
-
-                    // infoWindow.open(map, marker);
-                    // infoWindow.setPosition({lat: 39.333075, lng: -76.642093});
+                   // console.log(self.locationObjList()[x].summary);
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    window.setTimeout(function () {
+                      marker.setAnimation(null);
+                    }, 2000);
+                 
+                  
                   });
 
                   //markerList.push(marker);
