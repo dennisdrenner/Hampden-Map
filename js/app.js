@@ -18,7 +18,7 @@ var Location = function (data) {
     this.street = data.street;
     this.categories = data.categories;  //categories is an array 
     this.display = ko.observable(true); 
-    this.placeName = '';
+    //this.placeName = '';
     this.latLng = {};
     this.marker = {};
     this.marker.setMap = '';
@@ -27,7 +27,7 @@ var Location = function (data) {
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
         + self.city + ", " + self.state + " " + self.zipcode;
-    }
+    };
 
     self.bounce = function () {
       //console.log('bouncing');
@@ -37,12 +37,24 @@ var Location = function (data) {
       }, 2000);
     }
 
+    // //return a URL which will search the Flickr api for a photo matching self.placeName
+    // self.flickrURL = function () {
+    //   var URL = "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
+    //   "&api_key=757b8b4527c93ac33eb36984d673ce93" +
+    //   "&tags=" + self.placeName + "%2Cbaltimore" +
+    //   "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1" 
+    //   //"&auth_token=72157659226565246-57e3dceb871c1352" +
+    //   //"&api_sig=0e6fe25b75dd75a44b023abf07728298";
+    //   //console.log("PLACE name -- " , self.placeName);
+    //   return URL; 
+    // };
+
             // marker.setAnimation(google.maps.Animation.BOUNCE);
             //         window.setTimeout(function () {
             //           marker.setAnimation(null);
             //         }, 2000);
 
-  
+   
 };
 
 //Initial location info to be manually input 
@@ -114,8 +126,33 @@ function AppViewModel() {
     //adding them to the locationObjList observable array
     locations.forEach(function(locationObj) {
         self.locationObjList.push(new Location(locationObj));
-
     });    
+
+
+    //Interate through locationObjList and calculate URL
+    // for searching Flickr API for photos of location (returns info for one image as JSON)
+    //Attach this URL to the location object.
+    self.locationObjList().forEach(function (locationObj) {
+        locationObj.flickrURL = 
+        "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
+        "&api_key=757b8b4527c93ac33eb36984d673ce93" +
+        "&tags=" + locationObj.name + "%2Cbaltimore" +
+        "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1";
+        console.log(locationObj.flickrURL);
+    });
+
+
+    // //return a URL which will search the Flickr api for a photo matching self.placeName
+    // self.flickrURL = function () {
+      // var URL = "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
+      // "&api_key=757b8b4527c93ac33eb36984d673ce93" +
+      // "&tags=" + self.placeName + "%2Cbaltimore" +
+      // "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1" 
+      //"&auth_token=72157659226565246-57e3dceb871c1352" +
+      //"&api_sig=0e6fe25b75dd75a44b023abf07728298";
+    //   //console.log("PLACE name -- " , self.placeName);
+    //   return URL; 
+    // };
 
     //List of addresses only for use in the calculating Google map markers 
     //self.addressList = ko.observableArray([]);
@@ -129,6 +166,8 @@ function AppViewModel() {
     //Find locations which are a match for input search text 
     self.displayLocation = ko.computed(function() {
       for (i=0; i<self.locationObjList().length;i++){
+        //console.log(self.locationObjList()[i].flickrURL());
+
         //if searchBox text is a match for part of the name, set display == true on location object
         if (self.locationObjList()[i].name.search(self.searchBox()) !== -1) {
           self.locationObjList()[i].display(true); 
@@ -206,15 +245,20 @@ function AppViewModel() {
                         map: map, 
                   });
 
-                  var infoWindow = new google.maps.InfoWindow({
-                    content: "<div id='infoWindow2'><p>" + self.locationObjList()[x].summary + "</p></div>",
-                    maxWidth: 250,
-                  });
+                  // var infoWindow = new google.maps.InfoWindow({
+                  //   content: "<div id='infoWindow2'><p>" + self.locationObjList()[x].summary + "</p></div>",
+                  //   maxWidth: 250,
+                  // });
+
+
+
 
                   marker.addListener('click', function() {
                     //closeWindows(); 
                     //globalWindow.content = self.locationObjList()[x].summary
                     //globalWindow.open(map, marker);
+
+
                     infoDiv.innerHTML = "<p> SUMMARY: " + self.locationObjList()[x].summary + "</p";
                    // console.log(self.locationObjList()[x].summary);
                     marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -284,8 +328,8 @@ ko.applyBindings(new AppViewModel());
           
 
 
-var addresses = ['3646 Elm Ave, Baltimore, MD', '3400 Falls Road, Baltimore, MD',
-   '1005 W. 36th Street, Baltimore, MD'];
+// var addresses = ['3646 Elm Ave, Baltimore, MD', '3400 Falls Road, Baltimore, MD',
+//    '1005 W. 36th Street, Baltimore, MD'];
 
 
 
