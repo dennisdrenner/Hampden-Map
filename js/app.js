@@ -133,13 +133,51 @@ function AppViewModel() {
     // for searching Flickr API for photos of location (returns info for one image as JSON)
     //Attach this URL to the location object.
     self.locationObjList().forEach(function (locationObj) {
-        locationObj.flickrURL = 
+        var flickrURL = 
         "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
         "&api_key=757b8b4527c93ac33eb36984d673ce93" +
-        "&tags=" + locationObj.name + "%2Cbaltimore" +
+        "&tags=" + locationObj.name + 
         "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1";
-        console.log(locationObj.flickrURL);
+
+
+        //Get pictureURL from Flickr and attach to location object 
+        $.getJSON(flickrURL, function(data) {
+          locationObj.photoURL = "https://farm" + data['photos']['photo'][0].farm + 
+          ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + data['photos']['photo'][0].id +
+          "_" + data['photos']['photo'][0].secret + ".jpg";
+          console.log(flickrURL, locationObj, locationObj.photoURL);
+        });
+
+        // var response = $.ajax(flickrURL);
+
+        // for (i = 0; i < response.length; i++) {
+        //   console.log(response[i])
+        // };
+
+        // console.log(response);
+        // console.log($.ajax(flickrURL));
+        // console.log($.ajax(flickrURL));
+
+        //console.log(locationObj, locationObj.photoURL);
+
+
+        // var photoURL = "https://farm" + data['photos']['photo'][0].farm + 
+        // ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + "data['photos']['photo'][0].id" +
+        // "_" + data['photos']['photo'][0].secret + ".jpg";
+
+
     });
+
+       // $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
+       //          '&sensor=false', null, function (data) {
+       //            var p = data.results[0].geometry.location;
+       //            var latLng = new google.maps.LatLng(p.lat, p.lng);
+       //            var marker = 
+       //              new google.maps.Marker({
+       //                  animation: google.maps.Animation.DROP,
+       //                  position: latLng,
+       //                  map: map, 
+       //            });
 
 
     // //return a URL which will search the Flickr api for a photo matching self.placeName
