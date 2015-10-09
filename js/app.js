@@ -6,9 +6,7 @@
 //Constructor function for Location objects (i.e. locations in Hampden)
 
 var Location = function (data) {
-
     var self = this; 
-
     this.name = data.name;
     //this.imgSrc = ko.observable(data.imgSrc);
     this.city = "Baltimore"; 
@@ -23,6 +21,10 @@ var Location = function (data) {
     this.marker = {};
     this.marker.setMap = '';
     this.summary = data.summary; 
+    this.yelpId = data.yelpId;
+    this.img_url = '';
+    this.snippet_text = '';
+    this.rating_img_url = '';
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
@@ -35,30 +37,10 @@ var Location = function (data) {
       window.setTimeout(function () {
         self.marker.setAnimation(null);
       }, 2000);
-    }
-
-    // //return a URL which will search the Flickr api for a photo matching self.placeName
-    // self.flickrURL = function () {
-    //   var URL = "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
-    //   "&api_key=757b8b4527c93ac33eb36984d673ce93" +
-    //   "&tags=" + self.placeName + "%2Cbaltimore" +
-    //   "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1" 
-    //   //"&auth_token=72157659226565246-57e3dceb871c1352" +
-    //   //"&api_sig=0e6fe25b75dd75a44b023abf07728298";
-    //   //console.log("PLACE name -- " , self.placeName);
-    //   return URL; 
-    // };
-
-            // marker.setAnimation(google.maps.Animation.BOUNCE);
-            //         window.setTimeout(function () {
-            //           marker.setAnimation(null);
-            //         }, 2000);
-
-   
+    }   
 };
 
-//Initial location info to be manually input 
-
+//Initial location info (manually input)
 var locations = [
 
  {
@@ -66,9 +48,9 @@ var locations = [
           streetNumber: "1400",
           street: "W. 36th",
           categories: ["bar", "restaurant"],
-          summary: "One of the oldest and friendliest neighborhood bars and restaurants"
+          summary: "One of the oldest and friendliest neighborhood bars and restaurants",
+          yelpId: "fraziers-on-the-avenue-baltimore"
          
-
   },
 
  {
@@ -76,7 +58,8 @@ var locations = [
           streetNumber: "1005",
           street: "W. 36th",
           categories: ["shop"],
-          summary: "Great international gifts"
+          summary: "Great international gifts",
+          yelpId: "milagro-baltimore"
          
 
   },
@@ -86,7 +69,8 @@ var locations = [
           streetNumber: "1009",
           street: "W. 36th",
           categories: ["shop"], 
-          summary: "Wierd neighbor. Smells of cats"
+          summary: "Wierd neighbor. Smells of cats",
+          yelpId: ""
         
   },
 
@@ -95,7 +79,8 @@ var locations = [
           streetNumber: "3646",
           street: "Elm Avenue",
           categories: ["photographer"],
-          summary: "Headshot photographer."
+          summary: "Headshot photographer",
+          yelpId: "charm-city-headshots-baltimore"
 
   },
 
@@ -104,7 +89,8 @@ var locations = [
           streetNumber: "3600",
           street: "Falls Road",
           categories: ["home"],
-          summary: "Potential meth lab"
+          summary: "Potential meth lab",
+          yelpId: ""
 
   },
 ]
@@ -126,81 +112,14 @@ function AppViewModel() {
     //adding them to the locationObjList observable array
     locations.forEach(function(locationObj) {
         self.locationObjList.push(new Location(locationObj));
-    });    
+    });   
 
-
-    //Interate through locationObjList and calculate URL
-    // for searching Flickr API for photos of location (returns info for one image as JSON)
-    //Attach this URL to the location object.
-    self.locationObjList().forEach(function (locationObj) {
-        var flickrURL = 
-        "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
-        "&api_key=757b8b4527c93ac33eb36984d673ce93" +
-        "&tags=" + locationObj.name + 
-        "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1";
-
-
-        //Get pictureURL from Flickr and attach to location object 
-        $.getJSON(flickrURL, function(data) {
-          locationObj.photoURL = "https://farm" + data['photos']['photo'][0].farm + 
-          ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + data['photos']['photo'][0].id +
-          "_" + data['photos']['photo'][0].secret + ".jpg";
-          console.log(flickrURL, locationObj, locationObj.photoURL);
-        });
-
-        // var response = $.ajax(flickrURL);
-
-        // for (i = 0; i < response.length; i++) {
-        //   console.log(response[i])
-        // };
-
-        // console.log(response);
-        // console.log($.ajax(flickrURL));
-        // console.log($.ajax(flickrURL));
-
-        //console.log(locationObj, locationObj.photoURL);
-
-
-        // var photoURL = "https://farm" + data['photos']['photo'][0].farm + 
-        // ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + "data['photos']['photo'][0].id" +
-        // "_" + data['photos']['photo'][0].secret + ".jpg";
-
-
+    //Iterate through locationObjList and retrieve info from Yelp (if available)
+    self.locationObjList().forEach(function(locationObj) {
+        getYelpData(locationObj);
     });
 
-       // $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
-       //          '&sensor=false', null, function (data) {
-       //            var p = data.results[0].geometry.location;
-       //            var latLng = new google.maps.LatLng(p.lat, p.lng);
-       //            var marker = 
-       //              new google.maps.Marker({
-       //                  animation: google.maps.Animation.DROP,
-       //                  position: latLng,
-       //                  map: map, 
-       //            });
-
-
-    // //return a URL which will search the Flickr api for a photo matching self.placeName
-    // self.flickrURL = function () {
-      // var URL = "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
-      // "&api_key=757b8b4527c93ac33eb36984d673ce93" +
-      // "&tags=" + self.placeName + "%2Cbaltimore" +
-      // "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1" 
-      //"&auth_token=72157659226565246-57e3dceb871c1352" +
-      //"&api_sig=0e6fe25b75dd75a44b023abf07728298";
-    //   //console.log("PLACE name -- " , self.placeName);
-    //   return URL; 
-    // };
-
-    //List of addresses only for use in the calculating Google map markers 
-    //self.addressList = ko.observableArray([]);
-
-    //Iterate through locationList, adding addresses to address list 
-    // self.locationObjList().forEach(function(locationObj) {
-    //     self.addressList.push(locationObj.address());
-    // });    
-
-
+   
     //Find locations which are a match for input search text 
     self.displayLocation = ko.computed(function() {
       for (i=0; i<self.locationObjList().length;i++){
@@ -247,29 +166,10 @@ function AppViewModel() {
 
     function mapMaker() {
 
-      // //helper function for mapMaker function to set latLng and marker on location object
-      // function setLatLng (locationObj, latLng, marker) {
-      //     //console.log(locationObj, latLng, marker, x);
-      //     locationObj.latLng = latLng; 
-      //     locationObj.marker = marker; 
-      // }
-
-      //var markerList = [];
-
-      // function closeWindows () {
-      //   markerList.forEach(function (marker) {
-      //     marker.infowindow.close();
-      //   });
-      // }
-
-      // var globalWindow = new google.maps.InfoWindow({
-      //               content: "GLOBAL INFO WINDOW",
-      //               maxWidth: 250,
-      //             });
-
       var infoDiv = document.getElementById("infoDiv");
 
       for (var x = 0; x < self.locationObjList().length; x++) {
+        // TO DO: Use forEach instead of loop to implement mapMaker function 
 
         (function (x) {
           $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
@@ -283,31 +183,17 @@ function AppViewModel() {
                         map: map, 
                   });
 
-                  // var infoWindow = new google.maps.InfoWindow({
-                  //   content: "<div id='infoWindow2'><p>" + self.locationObjList()[x].summary + "</p></div>",
-                  //   maxWidth: 250,
-                  // });
-
-
-
-
                   marker.addListener('click', function() {
-                    //closeWindows(); 
-                    //globalWindow.content = self.locationObjList()[x].summary
-                    //globalWindow.open(map, marker);
+                    infoDiv.innerHTML = "<p> SUMMARY: " + self.locationObjList()[x].summary + "</p>"+
+                    "<img src="+ '"' + self.locationObjList()[x].img_url + '">' +
+                    "<p>" + self.locationObjList()[x].snippet_text + "</p>" + 
+                    "<img src="+ '"' + self.locationObjList()[x].rating_img_url + '">';
 
-
-                    infoDiv.innerHTML = "<p> SUMMARY: " + self.locationObjList()[x].summary + "</p";
-                   // console.log(self.locationObjList()[x].summary);
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                     window.setTimeout(function () {
                       marker.setAnimation(null);
-                    }, 2000);
-                 
-                  
+                    }, 2000);                  
                   });
-
-                  //markerList.push(marker);
                  
                   //attach latLng and marker to location objects as properties
                   self.locationObjList()[x].latLng = latLng;
@@ -316,39 +202,9 @@ function AppViewModel() {
           }(x));
       };
     }
-
-
-    // TO DO: Use forEach instead of loop to implement mapMaker function 
-
-    // self.locationObjList().forEach(function (x) {
-    //       $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
-    //             '&sensor=false', null, function (data) {
-    //               var p = data.results[0].geometry.location;
-    //               var latLng = new google.maps.LatLng(p.lat, p.lng);
-    //                 var marker = 
-    //                   new google.maps.Marker({
-    //                       animation: google.maps.Animation.DROP,
-    //                       position: latLng,
-    //                       map: map, 
-    //                 });
-                
-    //               //console.log(x);
-    //               //setLatLng(self.locationObjList()[x],latLng, marker, x);
-    //               //setLatLngFactory(self.locationObjList()[x],latLng, marker, x);
-
-    //               //attach latLng and marker to location objects as properties
-    //               self.locationObjList()[x].latLng = latLng;
-    //               self.locationObjList()[x].marker = marker;
-    //         });
-    //   });
-
-    
-
-
     
     mapMaker();
-    //console.log(self.locationObjList());
-    
+
     };
 
    
@@ -362,24 +218,160 @@ ko.applyBindings(new AppViewModel());
 /// ...
 
 
-/* ----------------------- GOOGLE MAP MAKER ----------------------- */
+/* ----------------------- OAuth Signature Generation for Yelp ----------------------- */
           
 
 
-// var addresses = ['3646 Elm Ave, Baltimore, MD', '3400 Falls Road, Baltimore, MD',
-//    '1005 W. 36th Street, Baltimore, MD'];
+
+/**
+ * Generates a random number and returns it as a string for OAuthentication
+ * @return {string}
+ */
+
+function nonce_generate() {
+  return (Math.floor(Math.random() * 1e12).toString());
+}
+
+//Access YELP API for all locations on the map which have a Yelpid. Parse the results and add img_url, 
+//snippet_text and rating_img_url to the locationObj as attributes. 
+
+function getYelpData (locationObj) {
+  var YELP_KEY = 'a0d6iLsmo3UQwIFD3vQy4g'; 
+  var YELP_TOKEN = 'Af0MT-f7yuN1H1SHnecbpbZtYb9nOaIB';
+  var YELP_KEY_SECRET = '8-2woIQShndzD2NkVim2ji_VXck';
+  var YELP_TOKEN_SECRET = 'yXv1Uc7SeI4eAEw4xUqaq_ncDI0';
+
+
+   if (locationObj.yelpId == "") { 
+    return;
+   };
+
+  var yelp_url = 'https://api.yelp.com/v2/business/' + locationObj.yelpId;
+
+  var parameters = {
+    oauth_consumer_key: YELP_KEY,
+    oauth_token: YELP_TOKEN,
+    oauth_nonce: nonce_generate(),
+    oauth_timestamp: Math.floor(Date.now()/1000),
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_version : '1.0',
+    callback: 'cb'              // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
+  };
+
+  var encodedSignature = oauthSignature.generate('GET',yelp_url, parameters, YELP_KEY_SECRET, YELP_TOKEN_SECRET);
+  parameters.oauth_signature = encodedSignature;
+
+  var settings = {
+    url: yelp_url,
+    data: parameters,
+    cache: true,                // This is crucial to include as well to prevent jQuery from adding on a cache-buster parameter "_=23489489749837", invalidating our oauth-signature
+    dataType: 'jsonp',
+    success: function(results) {
+      console.log(results);
+      locationObj.img_url = results.image_url; 
+      locationObj.snippet_text = results.snippet_text;
+      locationObj.rating_img_url = results.rating_img_url; 
+      //console.log("RESULT FROM AJAX QUERY:", results);
+      //console.log(results.snippet_text);
+      // Do stuff with results
+    },
+    error: function(response) {
+            // Do stuff on fail
+      console.log("THERE WAS AN ERROR!", response);
+
+    }
+  };
+
+  // Send AJAX query via jQuery library.
+  $.ajax(settings);
+
+}
 
 
 
 
 
+   //Interate through locationObjList and calculate URL
+    // for searching Flickr API for photos of location (returns info for one image as JSON)
+    //Attach this URL to the location object.
+//     self.locationObjList().forEach(function (locationObj) {
+//         var flickrURL = 
+//         "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
+//         "&api_key=757b8b4527c93ac33eb36984d673ce93" +
+//         "&tags=" + locationObj.name + 
+//         "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1";
+//         //console.log("FURL--", flickrURL);
 
 
-// mapMaker(); 
-      // $(document).ready(function() {
-      //       mapMaker();
-      //   })
-     
-     
+//         //Get pictureURL from Flickr and attach to location object 
+//         $.getJSON(flickrURL, function(data) {
+//           console.log(data);
+//           // locationObj.photoURL = "https://farm" + data['photos']['photo'][0].farm + 
+//           // ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + data['photos']['photo'][0].id +
+//           // "_" + data['photos']['photo'][0].secret + ".jpg";
+//           //console.log('helloooo', flickrURL, locationObj, locationObj.photoURL);
+//         })
+//         .fail(function( jqxhr, textStatus, error ) {
+//     var err = textStatus + ", " + error;
+//     console.log( "Request Failed: " + err );
+// })
 
+//         // .fail(function() {
+//         //   console.log("ERROR!!");
+//         // })
+//         .always(function() {
+//           console.log("Request completed");
+//         });
+
+        // var response = $.ajax(flickrURL);
+
+        // for (i = 0; i < response.length; i++) {
+        //   console.log(response[i])
+        // };
+
+        // console.log(response);
+        // console.log($.ajax(flickrURL));
+        // console.log($.ajax(flickrURL));
+
+        //console.log(locationObj, locationObj.photoURL);
+
+
+        // var photoURL = "https://farm" + data['photos']['photo'][0].farm + 
+        // ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + "data['photos']['photo'][0].id" +
+    //     // "_" + data['photos']['photo'][0].secret + ".jpg";
+
+
+    // });
+
+       // $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
+       //          '&sensor=false', null, function (data) {
+       //            var p = data.results[0].geometry.location;
+       //            var latLng = new google.maps.LatLng(p.lat, p.lng);
+       //            var marker = 
+       //              new google.maps.Marker({
+       //                  animation: google.maps.Animation.DROP,
+       //                  position: latLng,
+       //                  map: map, 
+       //            });
+
+
+    // //return a URL which will search the Flickr api for a photo matching self.placeName
+    // self.flickrURL = function () {
+      // var URL = "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
+      // "&api_key=757b8b4527c93ac33eb36984d673ce93" +
+      // "&tags=" + self.placeName + "%2Cbaltimore" +
+      // "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1" 
+      //"&auth_token=72157659226565246-57e3dceb871c1352" +
+      //"&api_sig=0e6fe25b75dd75a44b023abf07728298";
+    //   //console.log("PLACE name -- " , self.placeName);
+    //   return URL; 
+    // };
+
+    //List of addresses only for use in the calculating Google map markers 
+    //self.addressList = ko.observableArray([]);
+
+    //Iterate through locationList, adding addresses to address list 
+    // self.locationObjList().forEach(function(locationObj) {
+    //     self.addressList.push(locationObj.address());
+    // });    
 
