@@ -32,7 +32,6 @@ var Location = function (data) {
     };
 
     self.bounce = function () {
-      //console.log('bouncing');
       self.marker.setAnimation(google.maps.Animation.BOUNCE);
       window.setTimeout(function () {
         self.marker.setAnimation(null);
@@ -150,15 +149,6 @@ function AppViewModel() {
 
     //define new google map object 
     var map = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
-
-
-  
-    // //helper function for mapMaker function. create closure for setLatLng function
-    // function setLatLngFactory (locationObj, latLng, marker, x) {
-    //   return function () {
-    //       setLatLng(locationObj, latLng, marker);
-    //   };
-    // }
     
     //Iterate through locationObjList (array of all location objects), pull out the addresses and use these
     //to calculate latLng info from Google, create a new map marker, and add latLng and marker as properties
@@ -179,16 +169,26 @@ function AppViewModel() {
                   var marker = 
                     new google.maps.Marker({
                         animation: google.maps.Animation.DROP,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
                         position: latLng,
                         map: map, 
                   });
 
                   marker.addListener('click', function() {
                     infoDiv.innerHTML = "<p> SUMMARY: " + self.locationObjList()[x].summary + "</p>"+
-                    "<img src="+ '"' + self.locationObjList()[x].img_url + '">' +
-                    "<p>" + self.locationObjList()[x].snippet_text + "</p>" + 
-                    "<img src="+ '"' + self.locationObjList()[x].rating_img_url + '">';
+                      "<img src="+ '"' + self.locationObjList()[x].img_url + '">' +
+                      "<p>" + self.locationObjList()[x].snippet_text + "</p>" + 
+                      "<img src="+ '"' + self.locationObjList()[x].rating_img_url + '">';
 
+                    //Change all icons to red 
+                    for (i=0; i<self.locationObjList().length; i++) {
+                      self.locationObjList()[i].marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
+                    }
+
+                    //Change color of selected marker to green 
+                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');  
+                    
+                    //Marker will bounce for 2 seconds when clicked             
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                     window.setTimeout(function () {
                       marker.setAnimation(null);
@@ -236,11 +236,11 @@ function nonce_generate() {
 //snippet_text and rating_img_url to the locationObj as attributes. 
 
 function getYelpData (locationObj) {
+
   var YELP_KEY = 'a0d6iLsmo3UQwIFD3vQy4g'; 
   var YELP_TOKEN = 'Af0MT-f7yuN1H1SHnecbpbZtYb9nOaIB';
   var YELP_KEY_SECRET = '8-2woIQShndzD2NkVim2ji_VXck';
   var YELP_TOKEN_SECRET = 'yXv1Uc7SeI4eAEw4xUqaq_ncDI0';
-
 
    if (locationObj.yelpId == "") { 
     return;
@@ -280,8 +280,12 @@ function getYelpData (locationObj) {
       console.log("THERE WAS AN ERROR!", response);
 
     }
+
+    
   };
 
+
+  console.log(encodedSignature);
   // Send AJAX query via jQuery library.
   $.ajax(settings);
 
