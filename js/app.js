@@ -39,6 +39,7 @@ var Location = function (data) {
 };
 
 //Initial location info (manually input)
+
 var locations = [
 
  {
@@ -127,7 +128,7 @@ function AppViewModel() {
         getYelpData(locationObj);
     });
 
-    this.searchBox =  ko.observable("Enter search text");
+    this.searchBox =  ko.observable("Search HAMPDEN MAP");
    
     //Find locations which are a match for input search text 
     self.displayLocation = ko.computed(function() {
@@ -187,7 +188,7 @@ function AppViewModel() {
                   //(to remove old green markers from previously selected locations)
 
                   marker.addListener('click', function() {
-                    infoDiv.innerHTML = "<p> SUMMARY: " + self.locationObjList()[x].summary + "</p>"+
+                    infoDiv.innerHTML = "<p>" + self.locationObjList()[x].name + "</p>"+
                       "<img src="+ '"' + self.locationObjList()[x].img_url + '">' +
                       "<p>" + self.locationObjList()[x].snippet_text + "</p>" + 
                       "<img src="+ '"' + self.locationObjList()[x].rating_img_url + '">';
@@ -294,4 +295,90 @@ function getYelpData (locationObj) {
   $.ajax(settings);
 
 }  //End of getYelpData Function 
+
+
+
+   //Interate through locationObjList and calculate URL
+    // for searching Flickr API for photos of location (returns info for one image as JSON)
+    //Attach this URL to the location object.
+//     self.locationObjList().forEach(function (locationObj) {
+//         var flickrURL = 
+//         "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
+//         "&api_key=757b8b4527c93ac33eb36984d673ce93" +
+//         "&tags=" + locationObj.name + 
+//         "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1";
+//         //console.log("FURL--", flickrURL);
+
+
+//         //Get pictureURL from Flickr and attach to location object 
+//         $.getJSON(flickrURL, function(data) {
+//           console.log(data);
+//           // locationObj.photoURL = "https://farm" + data['photos']['photo'][0].farm + 
+//           // ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + data['photos']['photo'][0].id +
+//           // "_" + data['photos']['photo'][0].secret + ".jpg";
+//           //console.log('helloooo', flickrURL, locationObj, locationObj.photoURL);
+//         })
+//         .fail(function( jqxhr, textStatus, error ) {
+//     var err = textStatus + ", " + error;
+//     console.log( "Request Failed: " + err );
+// })
+
+//         // .fail(function() {
+//         //   console.log("ERROR!!");
+//         // })
+//         .always(function() {
+//           console.log("Request completed");
+//         });
+
+        // var response = $.ajax(flickrURL);
+
+        // for (i = 0; i < response.length; i++) {
+        //   console.log(response[i])
+        // };
+
+        // console.log(response);
+        // console.log($.ajax(flickrURL));
+        // console.log($.ajax(flickrURL));
+
+        //console.log(locationObj, locationObj.photoURL);
+
+
+        // var photoURL = "https://farm" + data['photos']['photo'][0].farm + 
+        // ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + "data['photos']['photo'][0].id" +
+    //     // "_" + data['photos']['photo'][0].secret + ".jpg";
+
+
+    // });
+
+       // $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
+       //          '&sensor=false', null, function (data) {
+       //            var p = data.results[0].geometry.location;
+       //            var latLng = new google.maps.LatLng(p.lat, p.lng);
+       //            var marker = 
+       //              new google.maps.Marker({
+       //                  animation: google.maps.Animation.DROP,
+       //                  position: latLng,
+       //                  map: map, 
+       //            });
+
+
+    // //return a URL which will search the Flickr api for a photo matching self.placeName
+    // self.flickrURL = function () {
+      // var URL = "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
+      // "&api_key=757b8b4527c93ac33eb36984d673ce93" +
+      // "&tags=" + self.placeName + "%2Cbaltimore" +
+      // "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1" 
+      //"&auth_token=72157659226565246-57e3dceb871c1352" +
+      //"&api_sig=0e6fe25b75dd75a44b023abf07728298";
+    //   //console.log("PLACE name -- " , self.placeName);
+    //   return URL; 
+    // };
+
+    //List of addresses only for use in the calculating Google map markers 
+    //self.addressList = ko.observableArray([]);
+
+    //Iterate through locationList, adding addresses to address list 
+    // self.locationObjList().forEach(function(locationObj) {
+    //     self.addressList.push(locationObj.address());
+    // });    
 
