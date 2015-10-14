@@ -191,7 +191,7 @@ function AppViewModel() {
                     infoDiv.innerHTML = "<p>" + self.locationObjList()[x].name + "</p>"+
                       "<img src="+ '"' + self.locationObjList()[x].img_url + '">' +
                       "<p>" + self.locationObjList()[x].snippet_text + "</p>" + 
-                      "<img src="+ '"' + self.locationObjList()[x].rating_img_url + '">';
+                      "<p>Yelp Review: <img src="+ '"' + self.locationObjList()[x].rating_img_url + '"></p>';
 
                     //Change all icons to red 
                     for (i=0; i<self.locationObjList().length; i++) {

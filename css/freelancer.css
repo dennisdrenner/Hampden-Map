@@ -475,8 +475,10 @@ footer .footer-below {
 }
 
 #infoDiv {
-    position: relative;
-    z-index: -2;
+    position: fixed;
+    z-index: 1;
+    top: 90px;
+    left: 20px;
     width: 392px;
     height: 400px;
     background-color: white; 
