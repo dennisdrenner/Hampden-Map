@@ -38,35 +38,47 @@
 
 
 
+
      <!-- Map -->
-<div id="mapWrapper" class ="container">
-     <form id="searchForm">
-        <input type="search" id="searchField" data-bind="value: searchBox">
-    </form>
-    <div id="infoDiv"></div>
-    <div id="hampdenMap"></div>
+<div id="mapWrapper">
+    <div id="hampdenMap">
+    </div>
+
+    <div id="searchForm">
+         <form>
+            <input type="search" id="searchField" data-bind="value: searchBox">
+        </form>
+    </div>
+
+    <div id="searchLocations">
+        <div>
+            <table>
+                <thead>
+                    <h4>Locations</h4>
+                </thead>
+
+                <tbody data-bind="foreach: locationObjList">
+                    <tr data-bind="visible: display, click: bounce,">
+                         <td data-bind="text: name" ></td>
+                    </tr>    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="infoDiv">
+        <div>      
+        </div>
+    </div>
+
+
 </div>
 
      <!-- /Map -->
 
      <!-- List view -->
 
-    <h2>SEARCH LOCATIONS</h2>
 
-<table>
-    <thead><tr>
-        <th>Location Name</th><th>Street</th><th>Category</th><th></th>
-    </tr></thead>
-
-    <tbody data-bind="foreach: locationObjList">
-        <tr data-bind="visible: display, click: bounce,">
-             <td data-bind="text: name" ></td>
-             <td data-bind="text: street" ></td>
-             <td data-bind="text: categories[0]" ></td>
-             <td data-bind="text: display" ></td>
-        </tr>    
-    </tbody>
-</table>
 
     <!-- /Listview  -->
 

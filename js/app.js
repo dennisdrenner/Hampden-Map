@@ -128,7 +128,7 @@ function AppViewModel() {
         getYelpData(locationObj);
     });
 
-    this.searchBox =  ko.observable("Search HAMPDEN MAP");
+    this.searchBox =  ko.observable("Search Hampden Map");
    
     //Find locations which are a match for input search text 
     self.displayLocation = ko.computed(function() {
