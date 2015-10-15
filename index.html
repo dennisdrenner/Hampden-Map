@@ -34,12 +34,8 @@
 
 </head>
 
-<body id="page-top" class="index">
+<body>
 
-
-
-
-     <!-- Map -->
 <div id="mapWrapper">
     <div id="hampdenMap">
     </div>
@@ -58,7 +54,7 @@
                 </thead>
 
                 <tbody data-bind="foreach: locationObjList">
-                    <tr data-bind="visible: display, click: bounce,">
+                    <tr data-bind="visible: display, click: bounce">
                          <td data-bind="text: name" ></td>
                     </tr>    
                 </tbody>
@@ -74,34 +70,7 @@
 
 </div>
 
-     <!-- /Map -->
 
-     <!-- List view -->
-
-
-
-    <!-- /Listview  -->
-
-    <!-- List view -->
-
-    <h2>LOCATIONS</h2>
-
-<table>
-    <thead><tr>
-        <th>Location Name</th><th>Street</th><th>Category</th><th></th>
-    </tr></thead>
-
-    <tbody data-bind="foreach: locationObjList">
-        <tr data-bind="click: bounce">
-             <td data-bind="text: name" ></td>
-             <td data-bind="text: street" ></td>
-             <td data-bind="text: categories[0]" ></td>
-             <td data-bind="text: display" ></td>
-        </tr>    
-    </tbody>
-</table>
-
-     <!-- /Listview  -->
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
