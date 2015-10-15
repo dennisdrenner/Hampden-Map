@@ -112,7 +112,10 @@ var locations = [
 
 function AppViewModel() {
 
-    var self = this; 
+   var self = this; 
+
+   this.availableCategories = ko.observableArray(["All", "Bar", "Restaurant", "Shop", "Photographer", "Other"]);
+   this.chosenCategories = ko.observableArray(["All"]);5 
 
     //List of all locations in the model
     self.locationObjList = ko.observableArray([]);

@@ -43,7 +43,7 @@ p.small {
     z-index: 2; 
     position: absolute;
     width: 392px; 
-    height: 48px;
+    height: 200px;
     left: 20px;
     top: 20px;  
     overflow:hidden;
@@ -61,7 +61,7 @@ p.small {
     z-index: 2; 
     position: absolute;
     left: 20px;
-    top: 78px; 
+    top: 228px; 
     width: 392px; 
     overflow: auto;
     padding-left: 20px;
@@ -82,7 +82,7 @@ p.small {
     z-index: 2;
     position: absolute;
     overflow: auto;
-    top: 188px;  
+    top: 338px;  
     left: 20px; 
     width: 392px; 
     height: 300px;
