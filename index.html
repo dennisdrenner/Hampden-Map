@@ -43,7 +43,6 @@
     <div id="searchForm">
          <form>
             <input type="search" id="searchField" data-bind="value: searchBox">
-
         </form>
              <select data-bind="options: availableCategories, selectedOptions: chosenCategories" size="6" multiple="true"></select>
     </div>
@@ -55,8 +54,8 @@
                     <h4>Locations</h4>
                 </thead>
 
-                <tbody data-bind="foreach: locationObjList">
-                    <tr data-bind="visible: display, click: bounce">
+                <tbody data-bind="foreach: matches">
+                    <tr> <!-- data-bind="visible: display, click: bounce">  -->
                          <td data-bind="text: name" ></td>
                     </tr>    
                 </tbody>

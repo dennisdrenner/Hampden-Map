@@ -56,7 +56,7 @@ var locations = [
           name: "Milagros",
           streetNumber: "1005",
           street: "W. 36th",
-          categories: ["shop"],
+          categories: ["shop", "restaurant"],
           summary: "Great international gifts",
           yelpId: "milagro-baltimore"
          
@@ -98,7 +98,7 @@ var locations = [
           name: "The Charmery",
           streetNumber: "801",
           street: "W. 36th Street",
-          categories: ["ice cream"],
+          categories: ["other"],
           summary: "Ice Cream",
           yelpId: "the-charmery-baltimore"
 
@@ -114,11 +114,44 @@ function AppViewModel() {
 
    var self = this; 
 
-   this.availableCategories = ko.observableArray(["All", "Bar", "Restaurant", "Shop", "Photographer", "Other"]);
-   this.chosenCategories = ko.observableArray(["All"]);5 
-
     //List of all locations in the model
-    self.locationObjList = ko.observableArray([]);
+   self.locationObjList = ko.observableArray([]);
+
+    //Categories of locations for search list 
+   self.availableCategories = ko.observableArray(["all", "bar", "restaurant", "shop", "photographer", "other"]);
+   
+   //Categories chosen by user 
+   self.chosenCategories = ko.observableArray(["all"]);
+
+   //An array to hold location objects corresponding to chosenCategories
+   self.matches = ko.observableArray([]);
+
+
+   //This function adds location objects which match chosenCategories to the matches array 
+   this.showMatches = ko.computed(function() {
+    //First reset previous matches from array 
+      self.matches([]);
+
+    //If user selects "all", add all location objects to the array  
+      if (self.chosenCategories()[0] == "all") { 
+        self.matches(self.locationObjList());
+        return;
+      }
+
+    //Otherwise iterate through the locations and find locations which match chosenCategories
+    //Nested loops needed as some locations have more than one category 
+      var locations = self.locationObjList();
+      var choices = self.chosenCategories();
+      for (i=0; i<locations.length;i++) {
+        for (j=0; j<choices.length; j++) {
+          for (k = 0; k<locations[i].categories.length; k++) {
+            if (choices[j] == locations[i].categories[k]) {
+              self.matches.push(locations[i]);
+            }
+          } 
+        }
+      }
+    });
 
     //Iterate through locations array, creating new location objects and 
     //adding them to the locationObjList observable array
@@ -134,23 +167,23 @@ function AppViewModel() {
     this.searchBox =  ko.observable("Search Hampden Map");
    
     //Find locations which are a match for input search text 
-    self.displayLocation = ko.computed(function() {
-      for (i=0; i<self.locationObjList().length;i++){
+    // self.displayLocation = ko.computed(function() {
+    //   for (i=0; i<self.matches().length;i++){
 
-        //if searchBox text is a match for part of the name, set display == true on location object
-        if (self.locationObjList()[i].name.search(self.searchBox()) !== -1) {
-          self.locationObjList()[i].display(true); 
-          //marker.setMap does not exist when map is first initialized, so we run this check to 
-          //avoid errors, 
-           if (self.locationObjList()[i].marker.setMap) { self.locationObjList()[i].marker.setMap(map); }
-        }
-        //else set display = false and remove marker from the map
-        else { 
-          self.locationObjList()[i].display(false);
-            if (self.locationObjList()[i].marker.setMap) { self.locationObjList()[i].marker.setMap(null); }
-        } 
-      }
-    });
+    //     //if searchBox text is a match for part of the name, set display == true on location object
+    //     if (self.matches()[i].name.search(self.searchBox()) !== -1) {
+    //       self.matches()[i].display(true); 
+    //       //marker.setMap does not exist when map is first initialized, so we run this check to 
+    //       //avoid errors, 
+    //        if (self.matches()[i].marker.setMap) { self.matches()[i].marker.setMap(map); }
+    //     }
+    //     //else set display = false and remove marker from the map
+    //     else { 
+    //       self.matches()[i].display(false);
+    //         if (self.matches()[i].marker.setMap) { self.matches()[i].marker.setMap(null); }
+    //     } 
+    //   }
+    // });
       
 
     //Set up data for google map object defined below 
