@@ -117,7 +117,13 @@ function AppViewModel() {
     //List of all locations in the model
    self.locationObjList = ko.observableArray([]);
 
-    //Categories of locations for search list 
+    //Iterate through locations array (from the Model), creating new location objects and 
+    //adding them to the locationObjList observable array
+    locations.forEach(function(locationObj) {
+        self.locationObjList.push(new Location(locationObj));
+    }); 
+
+   //Categories of locations 
    self.availableCategories = ko.observableArray(["all", "bar", "restaurant", "shop", "photographer", "other"]);
    
    //Categories chosen by user 
@@ -127,63 +133,86 @@ function AppViewModel() {
    self.matches = ko.observableArray([]);
 
 
-   //This function adds location objects which match chosenCategories to the matches array 
-   this.showMatches = ko.computed(function() {
-    //First reset previous matches from array 
-      self.matches([]);
-
-    //If user selects "all", add all location objects to the array  
-      if (self.chosenCategories()[0] == "all") { 
-        self.matches(self.locationObjList());
-        return;
-      }
-
-    //Otherwise iterate through the locations and find locations which match chosenCategories
-    //Nested loops needed as some locations have more than one category 
-      var locations = self.locationObjList();
-      var choices = self.chosenCategories();
-      for (i=0; i<locations.length;i++) {
-        for (j=0; j<choices.length; j++) {
-          for (k = 0; k<locations[i].categories.length; k++) {
-            if (choices[j] == locations[i].categories[k]) {
-              self.matches.push(locations[i]);
-            }
-          } 
-        }
-      }
-    });
-
-    //Iterate through locations array, creating new location objects and 
-    //adding them to the locationObjList observable array
-    locations.forEach(function(locationObj) {
-        self.locationObjList.push(new Location(locationObj));
-    });   
-
     //Iterate through locationObjList and retrieve info from Yelp (if available)
     self.locationObjList().forEach(function(locationObj) {
         getYelpData(locationObj);
     });
 
     this.searchBox =  ko.observable("Search Hampden Map");
+    self.filteredMatches = []; 
+
+   //This function adds location objects which match chosenCategories to the self.matches array 
+   this.showMatches = ko.computed(function() {
+      //First reset previous matches from array 
+        self.matches([]);
+
+      //Reset filteredMatches array to empty 
+        self.filteredMatches = [];
+       
+
+      //Iterate through the locations and find locations which match chosenCategories
+      //Nested loops needed as some locations have more than one category 
+        var locations = self.locationObjList();
+        var choices = self.chosenCategories();
+        for (i=0; i<locations.length;i++) {
+          for (j=0; j<choices.length; j++) {
+            for (k = 0; k<locations[i].categories.length; k++) {
+              if (choices[j] == locations[i].categories[k]) {
+                self.matches.push(locations[i]);
+              }
+            } 
+          }
+        }
+
+        //If user selects "all", add all of the location objects to the array  
+        if (self.chosenCategories()[0] == "all") { 
+          self.matches(self.locationObjList());
+        }
+
+        //Now we will filter the matches array further by selecting only locations which match the 
+        //search box entry 
+
+
+        //If no entry in searchBox, just return category matches and exit out of the function 
+        //console.log("SEARCHBOX", self.searchBox());
+        if (self.searchBox() == "" | self.searchBox() == "Search Hampden Map") {
+          return;
+
+        //Else if there is relevant text in the searchBox,  add matching locations to the array filteredMatches 
+        } else {
+
+            for (i=0; i<self.matches().length;i++) {
+                if (self.matches()[i].name.search(self.searchBox()) !== -1) {
+                  self.filteredMatches.push(self.matches()[i]);
+                  //console.log("FILT MATCHES--", self.filteredMatches);
+                  //marker.setMap does not exist when map is first initialized, so we run this check to 
+                  //avoid errors, and then add the marker for the search matched location to the map 
+              //    if (self.matches()[i].marker.setMap) { self.matches()[i].marker.setMap(map); }
+                
+
+            //else if the location does not match, set display = false and remove marker from the map
+            //} 
+
+            // else { 
+            //   self.matches()[i].display(false);
+            //   if (self.matches()[i].marker.setMap) { self.matches()[i].marker.setMap(null); }
+            // } 
+                }
+            }
+            //update matches array to only contain locations which match the category search and 
+            //the text in the search box
+            self.matches(self.filteredMatches);
+            console.log('matches-', self.matches());
+        }
+
+    });  //End of this.showMatches function 
+
+
    
     //Find locations which are a match for input search text 
-    // self.displayLocation = ko.computed(function() {
-    //   for (i=0; i<self.matches().length;i++){
+   // self.filterLocations = function (categoryMatches) {
 
-    //     //if searchBox text is a match for part of the name, set display == true on location object
-    //     if (self.matches()[i].name.search(self.searchBox()) !== -1) {
-    //       self.matches()[i].display(true); 
-    //       //marker.setMap does not exist when map is first initialized, so we run this check to 
-    //       //avoid errors, 
-    //        if (self.matches()[i].marker.setMap) { self.matches()[i].marker.setMap(map); }
-    //     }
-    //     //else set display = false and remove marker from the map
-    //     else { 
-    //       self.matches()[i].display(false);
-    //         if (self.matches()[i].marker.setMap) { self.matches()[i].marker.setMap(null); }
-    //     } 
-    //   }
-    // });
+   // });
       
 
     //Set up data for google map object defined below 
