@@ -56,7 +56,7 @@ var locations = [
           name: "Milagros",
           streetNumber: "1005",
           street: "W. 36th",
-          categories: ["shop", "restaurant"],
+          categories: ["shop"],
           summary: "Great international gifts",
           yelpId: "milagro-baltimore"
          
@@ -64,12 +64,12 @@ var locations = [
   },
 
    {
-          name: "Milagros Neighbor",
-          streetNumber: "1009",
+          name: "Golden West Cafe",
+          streetNumber: "1105",
           street: "W. 36th",
-          categories: ["shop"], 
-          summary: "Wierd neighbor. Smells of cats",
-          yelpId: ""
+          categories: ["restaurant", "bar"], 
+          summary: "Funky cafe run by surly hipsters",
+          yelpId: "golden-west-cafe-baltimore-3"
         
   },
 
@@ -80,6 +80,16 @@ var locations = [
           categories: ["photographer"],
           summary: "Headshot photographer",
           yelpId: "charm-city-headshots-baltimore"
+
+  },
+
+     {
+          name: "NV Salon Collective",
+          streetNumber: "861",
+          street: "W. 36th St",
+          categories: ["salon"],
+          summary: "Hair salon",
+          yelpId: "nv-salon-collective-baltimore"
 
   },
 
@@ -124,7 +134,7 @@ function AppViewModel() {
     }); 
 
    //Categories of locations 
-   self.availableCategories = ko.observableArray(["all", "bar", "restaurant", "shop", "photographer", "other"]);
+   self.availableCategories = ko.observableArray(["all", "bar", "restaurant", "shop", "photographer", "salon", "barber", "other"]);
    
    //Categories chosen by user 
    self.chosenCategories = ko.observableArray(["all"]);
@@ -196,36 +206,16 @@ function AppViewModel() {
             for (i=0; i<self.matches().length;i++) {
                 if (self.matches()[i].name.search(self.searchBox()) !== -1) {
                   self.filteredMatches.push(self.matches()[i]);
-                  //console.log("FILT MATCHES--", self.filteredMatches);
-                  //marker.setMap does not exist when map is first initialized, so we run this check to 
-                  //avoid errors, and then add the marker for the search matched location to the map 
-              //    if (self.matches()[i].marker.setMap) { self.matches()[i].marker.setMap(map); }
-                
-
-            //else if the location does not match, set display = false and remove marker from the map
-            //} 
-
-            // else { 
-            //   self.matches()[i].display(false);
-            //   if (self.matches()[i].marker.setMap) { self.matches()[i].marker.setMap(null); }
-            // } 
                 }
             }
             //update matches array to only contain locations which match the category search and 
             //the text in the search box
             self.matches(self.filteredMatches);
             self.mapFilter(); 
-           // console.log('matches-', self.matches());
         }
 
     });  //End of this.showMatches function 
-
-   
-    //Find locations which are a match for input search text 
-   // self.filterLocations = function (categoryMatches) {
-
-   // });
-      
+  
 
     //Set up data for google map object defined below 
     var mapOptions = {
@@ -278,7 +268,7 @@ function AppViewModel() {
                     //Change color of selected marker to green 
                     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');  
                     
-                    //Marker will bounce for 1 seconds when clicked             
+                    //Marker will bounce for 1 second when clicked             
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                     window.setTimeout(function () {
                       marker.setAnimation(null);
@@ -292,7 +282,7 @@ function AppViewModel() {
           }(x));
       };
     }
-    
+
     mapMaker();
 
     };
@@ -301,14 +291,9 @@ function AppViewModel() {
 // Activates knockout.js
 ko.applyBindings(new AppViewModel());
 
-/// ...
-
 
 /* ----------------------- OAuth Signature Generation for Yelp ----------------------- */
           
-
-
-
 
  //Generates a random number and returns it as a string for OAuthentication
 
@@ -372,90 +357,3 @@ function getYelpData (locationObj) {
   $.ajax(settings);
 
 }  //End of getYelpData Function 
-
-
-
-   //Interate through locationObjList and calculate URL
-    // for searching Flickr API for photos of location (returns info for one image as JSON)
-    //Attach this URL to the location object.
-//     self.locationObjList().forEach(function (locationObj) {
-//         var flickrURL = 
-//         "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
-//         "&api_key=757b8b4527c93ac33eb36984d673ce93" +
-//         "&tags=" + locationObj.name + 
-//         "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1";
-//         //console.log("FURL--", flickrURL);
-
-
-//         //Get pictureURL from Flickr and attach to location object 
-//         $.getJSON(flickrURL, function(data) {
-//           console.log(data);
-//           // locationObj.photoURL = "https://farm" + data['photos']['photo'][0].farm + 
-//           // ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + data['photos']['photo'][0].id +
-//           // "_" + data['photos']['photo'][0].secret + ".jpg";
-//           //console.log('helloooo', flickrURL, locationObj, locationObj.photoURL);
-//         })
-//         .fail(function( jqxhr, textStatus, error ) {
-//     var err = textStatus + ", " + error;
-//     console.log( "Request Failed: " + err );
-// })
-
-//         // .fail(function() {
-//         //   console.log("ERROR!!");
-//         // })
-//         .always(function() {
-//           console.log("Request completed");
-//         });
-
-        // var response = $.ajax(flickrURL);
-
-        // for (i = 0; i < response.length; i++) {
-        //   console.log(response[i])
-        // };
-
-        // console.log(response);
-        // console.log($.ajax(flickrURL));
-        // console.log($.ajax(flickrURL));
-
-        //console.log(locationObj, locationObj.photoURL);
-
-
-        // var photoURL = "https://farm" + data['photos']['photo'][0].farm + 
-        // ".staticflickr.com/" + data['photos']['photo'][0].server + "/" + "data['photos']['photo'][0].id" +
-    //     // "_" + data['photos']['photo'][0].secret + ".jpg";
-
-
-    // });
-
-       // $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+self.locationObjList()[x].address()+
-       //          '&sensor=false', null, function (data) {
-       //            var p = data.results[0].geometry.location;
-       //            var latLng = new google.maps.LatLng(p.lat, p.lng);
-       //            var marker = 
-       //              new google.maps.Marker({
-       //                  animation: google.maps.Animation.DROP,
-       //                  position: latLng,
-       //                  map: map, 
-       //            });
-
-
-    // //return a URL which will search the Flickr api for a photo matching self.placeName
-    // self.flickrURL = function () {
-      // var URL = "https://api.flickr.com/services/rest/?method=flickr.photos.search" + 
-      // "&api_key=757b8b4527c93ac33eb36984d673ce93" +
-      // "&tags=" + self.placeName + "%2Cbaltimore" +
-      // "&safe_search=1&content_type=1&per_page=1&format=json&nojsoncallback=1" 
-      //"&auth_token=72157659226565246-57e3dceb871c1352" +
-      //"&api_sig=0e6fe25b75dd75a44b023abf07728298";
-    //   //console.log("PLACE name -- " , self.placeName);
-    //   return URL; 
-    // };
-
-    //List of addresses only for use in the calculating Google map markers 
-    //self.addressList = ko.observableArray([]);
-
-    //Iterate through locationList, adding addresses to address list 
-    // self.locationObjList().forEach(function(locationObj) {
-    //     self.addressList.push(locationObj.address());
-    // });    
-
