@@ -142,6 +142,7 @@ function AppViewModel() {
     self.filteredMatches = []; 
 
    //This function adds location objects which match chosenCategories to the self.matches array 
+
    this.showMatches = ko.computed(function() {
       //First reset previous matches from array 
         self.matches([]);
@@ -172,10 +173,21 @@ function AppViewModel() {
         //Now we will filter the matches array further by selecting only locations which match the 
         //search box entry 
 
+        self.mapFilter = function () {
+          for (i=0; i<self.locationObjList().length; i++) {
+            //remove all markers from map
+            if (self.locationObjList()[i].marker.setMap) {self.locationObjList()[i].marker.setMap(null);} 
+          }
+          //set markers on map for matched locations
+          for (i=0; i<self.matches().length; i++) {
+            if (self.matches()[i].marker.setMap) {self.matches()[i].marker.setMap(map);}
+          }
+        }
 
         //If no entry in searchBox, just return category matches and exit out of the function 
         //console.log("SEARCHBOX", self.searchBox());
         if (self.searchBox() == "" | self.searchBox() == "Search Hampden Map") {
+          self.mapFilter(); 
           return;
 
         //Else if there is relevant text in the searchBox,  add matching locations to the array filteredMatches 
@@ -202,11 +214,11 @@ function AppViewModel() {
             //update matches array to only contain locations which match the category search and 
             //the text in the search box
             self.matches(self.filteredMatches);
-            console.log('matches-', self.matches());
+            self.mapFilter(); 
+           // console.log('matches-', self.matches());
         }
 
     });  //End of this.showMatches function 
-
 
    
     //Find locations which are a match for input search text 
