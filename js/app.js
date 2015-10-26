@@ -230,6 +230,13 @@ function AppViewModel() {
 
     //Define a new google map object 
     var map = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
+
+    //Add an event listener to resize map when user changes browser window size
+    google.maps.event.addDomListener(window, "resize", function() {
+     var center = map.getCenter();
+     google.maps.event.trigger(map, "resize");
+     map.setCenter(center); 
+    });
     
 
     //Iterate through locationObjList (array of all location objects), pull out the addresses and use these
@@ -358,7 +365,7 @@ function getYelpData (locationObj) {
       locationObj.rating_img_url = results.rating_img_url; 
     },
     error: function(response) {
-      console.log("THERE WAS AN ERROR!", response);
+      console.log("THERE WAS AN ERROR in GET YELP DATA: ", response);
     }
 
     
