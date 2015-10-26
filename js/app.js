@@ -124,7 +124,7 @@ function AppViewModel() {
 
    var self = this; 
 
-    //List of all locations in the model
+    //List of all locations in the locations array in the model
    self.locationObjList = ko.observableArray([]);
 
     //Iterate through locations array (from the Model), creating new location objects and 
@@ -148,10 +148,15 @@ function AppViewModel() {
         getYelpData(locationObj);
     });
 
+    //search field for searching locations 
     this.searchBox =  ko.observable("Search Hampden Map");
+
+    //an array to hold locations which match category and/or searchBox entries
     self.filteredMatches = []; 
 
-   //This function adds location objects which match chosenCategories to the self.matches array 
+   //The this.showMatches function adds location objects which match chosenCategories and/or the searchBox entry
+  //to the self.matches array, and then updates the markers on the map
+  //the listview is updated by knockout data-bindings with the matches observable array 
 
    this.showMatches = ko.computed(function() {
       //First reset previous matches from array 
@@ -182,14 +187,15 @@ function AppViewModel() {
 
         //Now we will filter the matches array further by selecting only locations which match the 
         //search box entry 
-
         self.mapFilter = function () {
           for (i=0; i<self.locationObjList().length; i++) {
             //remove all markers from map
+            //if statement is necessary because marker.setMap does not exist until the mapMaker function (below) runs
             if (self.locationObjList()[i].marker.setMap) {self.locationObjList()[i].marker.setMap(null);} 
           }
           //set markers on map for matched locations
           for (i=0; i<self.matches().length; i++) {
+             //if statement is necessary because marker.setMap does not exist until the mapMaker function (below) runs
             if (self.matches()[i].marker.setMap) {self.matches()[i].marker.setMap(map);}
           }
         }
@@ -202,7 +208,6 @@ function AppViewModel() {
 
         //Else if there is relevant text in the searchBox,  add matching locations to the array filteredMatches 
         } else {
-
             for (i=0; i<self.matches().length;i++) {
                 if (self.matches()[i].name.search(self.searchBox()) !== -1) {
                   self.filteredMatches.push(self.matches()[i]);
@@ -278,7 +283,13 @@ function AppViewModel() {
                   //attach latLng and marker to location objects as properties
                   self.locationObjList()[x].latLng = latLng;
                   self.locationObjList()[x].marker = marker;
-                });
+                })
+
+        //Notify of failure in mapMaker (jQuery default is to fail silently)
+            .fail(function() {
+            console.log("FAILURE IN MAPMAKER FUNCTION");
+          });
+
           }(x));
       };
     }
