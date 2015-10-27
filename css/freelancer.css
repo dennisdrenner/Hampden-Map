@@ -95,11 +95,12 @@ p.small {
 
 
 #searchField {
-    border: none;
+    border: 1px;
+    margin: 10px 10px 10px 10px;
 }
 
 #searchField:focus {
-    border: none;
+    border: 1px;
 
 }
 #mapWrapper {
@@ -109,7 +110,7 @@ p.small {
 
 
 
-/* ==================== SLIDER TEST ================================== */
+/* ==================== SLIDER TEST ==================================
 
 
 /* adjust body when menu is open */
@@ -153,7 +154,8 @@ body.slide-active {
     background: orange
 }
 .navbar-header {
-    position: relative
+    position: relative;
+
 }
 /* un fix the navbar when active so that all the menu items are accessible */
 .navbar.navbar-fixed-top.slide-active {
@@ -197,10 +199,10 @@ body.slide-active {
         white-space: normal;
     }
     #slide-nav {
-        border-top: 0
+        border-top: 0;
     }
     #slide-nav.navbar-inverse #slidemenu {
-        background: #333
+        background: #333;
     }
     /* this is behind the navigation but the navigation is not inside it so that the navigation is accessible and scrolls*/
     #slide-nav #navbar-height-col {
@@ -212,7 +214,7 @@ body.slide-active {
         background: #eee;
     }
     #slide-nav.navbar-inverse #navbar-height-col {
-        background: #333;
+        background: #333; 
         z-index: 1;
         border: 0;
     }

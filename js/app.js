@@ -35,6 +35,14 @@ var Location = function (data) {
       window.setTimeout(function () {
         self.marker.setAnimation(null);
       }, 1000);
+    }
+
+    self.openInfoWindow = function () {
+      var infoDiv = document.getElementById("infoDiv");
+      infoDiv.innerHTML = "<p>" + self.name + "</p>"+
+                      "<img src="+ '"' + self.img_url + '">' +
+                      "<p>" + self.snippet_text + "</p>" + 
+                      "<p>Yelp Review: <img src="+ '"' + self.rating_img_url + '"></p>';
     }   
 };
 
