@@ -150,7 +150,6 @@ function AppViewModel() {
    //An array to hold location objects corresponding to chosenCategories
    self.matches = ko.observableArray([]);
 
-
     //Iterate through locationObjList and retrieve info from Yelp (if available)
     self.locationObjList().forEach(function(locationObj) {
         getYelpData(locationObj);
@@ -161,6 +160,12 @@ function AppViewModel() {
 
     //an array to hold locations which match category and/or searchBox entries
     self.filteredMatches = []; 
+
+    self.clearInfoDiv = function () {
+      var infoDiv = document.getElementById("infoDiv");
+      infoDiv.innerHTML = "";
+
+    }
 
    //The this.showMatches function adds location objects which match chosenCategories and/or the searchBox entry
   //to the self.matches array, and then updates the markers on the map
