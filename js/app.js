@@ -39,6 +39,7 @@ var Location = function (data) {
 
     self.openInfoWindow = function () {
       var infoDiv = document.getElementById("infoDiv");
+      infoDiv.style.display = "block";
       infoDiv.innerHTML = "<p>" + self.name + "</p>"+
                       "<img src="+ '"' + self.img_url + '">' +
                       "<p>" + self.snippet_text + "</p>" + 
@@ -46,8 +47,8 @@ var Location = function (data) {
     }   
 };
 
-//Initial location info (manually input)
 
+//Initial location info (manually input)
 var locations = [
 
  {
@@ -164,7 +165,7 @@ function AppViewModel() {
     self.clearInfoDiv = function () {
       var infoDiv = document.getElementById("infoDiv");
       infoDiv.innerHTML = "";
-
+      infoDiv.style.display = 'none'; 
     }
 
    //The this.showMatches function adds location objects which match chosenCategories and/or the searchBox entry
@@ -214,7 +215,6 @@ function AppViewModel() {
         }
 
         //If no entry in searchBox, just return category matches and exit out of the function 
-        //console.log("SEARCHBOX", self.searchBox());
         if (self.searchBox() == "" | self.searchBox() == "Search Hampden Map") {
           self.mapFilter(); 
           return;
@@ -280,6 +280,7 @@ function AppViewModel() {
                   //(to remove old green markers from previously selected locations)
 
                   marker.addListener('click', function() {
+                    infoDiv.style.display = "block";
                     infoDiv.innerHTML = "<p>" + self.locationObjList()[x].name + "</p>"+
                       "<img src="+ '"' + self.locationObjList()[x].img_url + '">' +
                       "<p>" + self.locationObjList()[x].snippet_text + "</p>" + 
@@ -313,13 +314,11 @@ function AppViewModel() {
           }(x));
       };
     }
-
     mapMaker();
 
     };
 
 
-// Activates knockout.js
 ko.applyBindings(new AppViewModel());
 
 
