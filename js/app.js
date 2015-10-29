@@ -23,6 +23,7 @@ var Location = function (data) {
     this.img_url = '';
     this.snippet_text = '';
     this.rating_img_url = '';
+    this.icon = data.icon; // custom icon for Google map
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
@@ -57,7 +58,8 @@ var locations = [
           street: "W. 36th",
           categories: ["bar", "restaurant"],
           summary: "One of the oldest and friendliest neighborhood bars and restaurants",
-          yelpId: "fraziers-on-the-avenue-baltimore"
+          yelpId: "fraziers-on-the-avenue-baltimore",
+          icon: "img/icons/restaurant.png"
          
   },
 
@@ -67,7 +69,8 @@ var locations = [
           street: "W. 36th",
           categories: ["shop"],
           summary: "Great international gifts",
-          yelpId: "milagro-baltimore"
+          yelpId: "milagro-baltimore",
+          icon: "img/icons/gifts.png"
          
 
   },
@@ -78,7 +81,8 @@ var locations = [
           street: "W. 36th",
           categories: ["restaurant", "bar"], 
           summary: "Funky cafe run by surly hipsters",
-          yelpId: "golden-west-cafe-baltimore-3"
+          yelpId: "golden-west-cafe-baltimore-3",
+          icon:  "img/icons/restaurant.png"
         
   },
 
@@ -88,7 +92,8 @@ var locations = [
           street: "Elm Avenue",
           categories: ["photographer"],
           summary: "Headshot photographer",
-          yelpId: "charm-city-headshots-baltimore"
+          yelpId: "charm-city-headshots-baltimore",
+          icon:  "img/icons/photo.png"
 
   },
 
@@ -98,7 +103,8 @@ var locations = [
           street: "W. 36th St",
           categories: ["salon"],
           summary: "Hair salon",
-          yelpId: "nv-salon-collective-baltimore"
+          yelpId: "nv-salon-collective-baltimore",
+          icon: "img/icons/barber.png"
 
   },
 
@@ -108,7 +114,8 @@ var locations = [
           street: "W. 36th St",
           categories: ["barber"],
           summary: "Barber shop",
-          yelpId: "old-bank-barbers-baltimore"
+          yelpId: "old-bank-barbers-baltimore",
+          icon: "img/icons/barber.png"
 
   },
 
@@ -119,7 +126,8 @@ var locations = [
           street: "W. 36th Street",
           categories: ["other"],
           summary: "Ice Cream",
-          yelpId: "the-charmery-baltimore"
+          yelpId: "the-charmery-baltimore",
+          icon: "img/icons/icecream.png"
 
   },
 
@@ -270,7 +278,8 @@ function AppViewModel() {
                   var marker = 
                     new google.maps.Marker({
                         animation: google.maps.Animation.DROP,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                        icon: self.locationObjList()[x].icon,
+                        //icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
                         position: latLng,
                         map: map, 
                   });
@@ -280,6 +289,10 @@ function AppViewModel() {
                   //(to remove old green markers from previously selected locations)
 
                   marker.addListener('click', function() {
+                   // TO DO:  reset map position based on clicked location
+                   // centering the map on the location is not ideal however
+                   //also animate and smooth the transition
+                   // map.setCenter(self.locationObjList()[x].latLng); 
                     infoDiv.style.display = "block";
                     infoDiv.innerHTML = "<p>" + self.locationObjList()[x].name + "</p>"+
                       "<img src="+ '"' + self.locationObjList()[x].img_url + '">' +
@@ -288,7 +301,7 @@ function AppViewModel() {
 
                     //Change all icons to red 
                     for (i=0; i<self.locationObjList().length; i++) {
-                      self.locationObjList()[i].marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
+                      self.locationObjList()[i].marker.setIcon(self.locationObjList()[i].icon);
                     }
 
                     //Change color of selected marker to green 
