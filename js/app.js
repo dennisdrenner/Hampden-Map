@@ -24,6 +24,7 @@ var Location = function (data) {
     this.snippet_text = '';
     this.rating_img_url = '';
     this.icon = data.icon; // custom icon for Google map
+    this.icon_selected = data.icon_selected;
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " 
@@ -59,7 +60,8 @@ var locations = [
           categories: ["bar", "restaurant"],
           summary: "One of the oldest and friendliest neighborhood bars and restaurants",
           yelpId: "fraziers-on-the-avenue-baltimore",
-          icon: "img/icons/restaurant.png"
+          icon: "img/icons/restaurant.png",
+          icon_selected:  "img/icons_selected/restaurant.png"
          
   },
 
@@ -70,7 +72,8 @@ var locations = [
           categories: ["shop"],
           summary: "Great international gifts",
           yelpId: "milagro-baltimore",
-          icon: "img/icons/gifts.png"
+          icon: "img/icons/gifts.png",
+          icon_selected:  "img/icons_selected/gifts.png"
          
 
   },
@@ -82,7 +85,8 @@ var locations = [
           categories: ["restaurant", "bar"], 
           summary: "Funky cafe run by surly hipsters",
           yelpId: "golden-west-cafe-baltimore-3",
-          icon:  "img/icons/restaurant.png"
+          icon:  "img/icons/restaurant.png",
+          icon_selected:  "img/icons_selected/restaurant.png"
         
   },
 
@@ -93,7 +97,8 @@ var locations = [
           categories: ["photographer"],
           summary: "Headshot photographer",
           yelpId: "charm-city-headshots-baltimore",
-          icon:  "img/icons/photo.png"
+          icon:  "img/icons/photo.png",
+          icon_selected:  "img/icons_selected/photo.png"
 
   },
 
@@ -104,7 +109,8 @@ var locations = [
           categories: ["salon"],
           summary: "Hair salon",
           yelpId: "nv-salon-collective-baltimore",
-          icon: "img/icons/barber.png"
+          icon: "img/icons/barber.png",
+          icon_selected:  "img/icons_selected/barber.png"
 
   },
 
@@ -115,7 +121,8 @@ var locations = [
           categories: ["barber"],
           summary: "Barber shop",
           yelpId: "old-bank-barbers-baltimore",
-          icon: "img/icons/barber.png"
+          icon: "img/icons/barber.png",
+          icon_selected:  "img/icons_selected/barber.png"
 
   },
 
@@ -127,7 +134,8 @@ var locations = [
           categories: ["other"],
           summary: "Ice Cream",
           yelpId: "the-charmery-baltimore",
-          icon: "img/icons/icecream.png"
+          icon: "img/icons/icecream.png",
+          icon_selected:  "img/icons_selected/icecream.png"
 
   },
 
@@ -304,8 +312,9 @@ function AppViewModel() {
                       self.locationObjList()[i].marker.setIcon(self.locationObjList()[i].icon);
                     }
 
-                    //Change color of selected marker to green 
-                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');  
+                    //Change marker to selected version
+                    marker.setIcon(self.locationObjList()[x].icon_selected);
+                    //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');  
                     
                     //Marker will bounce for 1 second when clicked             
                     marker.setAnimation(google.maps.Animation.BOUNCE);
