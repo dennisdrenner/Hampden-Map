@@ -39,13 +39,32 @@ p.small {
 }
 
 
+#searchBox {
+    z-index: 2; 
+    position: absolute;
+    width: 392px; 
+    height: 40px;
+    left: 20px;
+    top: 65px;  
+    overflow:hidden;
+    background: #fff;
+    border-radius: 2px;
+    box-sizing: border-box;
+    border-bottom: 1px solid transparent;
+    padding: 0px 0px 0px 0px;
+    transition-property: background, box-shadow;
+    transition-duration: 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
+}
+
+
 #searchForm {
     z-index: 2; 
     position: absolute;
     width: 392px; 
-    height: 200px;
+    height: 150px;
     left: 20px;
-    top: 20px;  
+    top: 110px;  
     overflow:hidden;
     background: #fff;
     border-radius: 2px;
@@ -61,7 +80,7 @@ p.small {
     z-index: 2; 
     position: absolute;
     left: 20px;
-    top: 228px; 
+    top: 265px; 
     width: 392px; 
     overflow: auto;
     padding-left: 20px;
@@ -70,7 +89,7 @@ p.small {
     background: #fff;
     border-radius: 2px;
     box-sizing: border-box;
-    height: 100px; 
+    height: 150px; 
     border-bottom: 1px solid transparent;
     padding: 12px 104px 11px 64px;
     transition-property: background, box-shadow;
@@ -82,7 +101,7 @@ p.small {
     z-index: 2;
     position: absolute;
     overflow: auto;
-    top: 338px;  
+    top: 420px;  
     left: 20px; 
     width: 392px; 
     height: 300px;
@@ -100,7 +119,7 @@ p.small {
 }
 
 #searchField:focus {
-    border: 1px;
+    border: ;
 
 }
 #mapWrapper {
@@ -155,7 +174,6 @@ body.slide-active {
 }
 .navbar-header {
     position: relative;
-
 }
 /* un fix the navbar when active so that all the menu items are accessible */
 .navbar.navbar-fixed-top.slide-active {

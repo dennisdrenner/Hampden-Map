@@ -22,8 +22,6 @@
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css"> 
 
-    <!-- OAuth signature library --> 
-    <script src="bower_components/oauth-signature/dist/oauth-signature.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -45,16 +43,19 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
      </a>
-    <a class="navbar-brand" href="#">HAMPDEN MAP</a>
+    <h1 class="navbar-brand">HAMPDEN MAP</h1>
 
    </div>
    <div id="slidemenu">
+            <div id="searchBox">
+                <form>
+
+                   <input type="search" id="searchField" data-bind="value: searchBox">
+                </form>
+            </div>
 
           <div id="searchForm">
-             <form>
-                <input type="search" id="searchField" data-bind="value: searchBox">
-            </form>
-
+            <h4>Categories</h4>
             <select data-bind="options: availableCategories, selectedOptions: chosenCategories, click: clearInfoDiv" size="6" multiple="true"></select>
            </div>
 
@@ -103,8 +104,6 @@
     </div>
 </div>
 
-
-
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
@@ -118,7 +117,10 @@
     <script src="js/freelancer.js"></script>  
 
     <!-- Slider Menu Javascript -->
-    <script src="js/slider.js"></script>  
+    <script src="js/slider.js"></script>
+
+    <!-- OAuth signature library --> 
+    <script src="bower_components/oauth-signature/dist/oauth-signature.js"></script>  
 
     <script>
     //Delay loading of js/app.js until Google maps JS is fully loaded 
@@ -131,19 +133,12 @@
     </script>
 
     <!-- Knockout.js -->
-    <script async src="js/knockout-3.3.0.js"></script>
+    <script src="js/knockout-3.3.0.js"></script>
 
     <!-- Google Maps API --> 
     <script async type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA813jCip3GPvTY7rWJAdnRXH_cch6SUfw&callback=appLoader">
     </script>
   
-  
-
-
-
-
-  
-
 </body>
 
 </html>
