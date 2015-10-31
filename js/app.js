@@ -60,8 +60,8 @@ var locations = [
           categories: ["bar", "restaurant"],
           summary: "One of the oldest and friendliest neighborhood bars and restaurants",
           yelpId: "fraziers-on-the-avenue-baltimore",
-          icon: "img/icons/restaurant.png",
-          icon_selected:  "img/icons_selected/restaurant.png"
+          icon: "img/icons/restaurant.PNG",
+          icon_selected:  "img/icons_selected/restaurant.PNG"
          
   },
 
@@ -72,8 +72,8 @@ var locations = [
           categories: ["shop"],
           summary: "Great international gifts",
           yelpId: "milagro-baltimore",
-          icon: "img/icons/gifts.png",
-          icon_selected:  "img/icons_selected/gifts.png"
+          icon: "img/icons/gifts.PNG",
+          icon_selected:  "img/icons_selected/gifts.PNG"
          
 
   },
@@ -85,8 +85,8 @@ var locations = [
           categories: ["restaurant", "bar"], 
           summary: "Funky cafe run by surly hipsters",
           yelpId: "golden-west-cafe-baltimore-3",
-          icon:  "img/icons/restaurant.png",
-          icon_selected:  "img/icons_selected/restaurant.png"
+          icon:  "img/icons/restaurant.PNG",
+          icon_selected:  "img/icons_selected/restaurant.PNG"
         
   },
 
@@ -97,8 +97,8 @@ var locations = [
           categories: ["photographer"],
           summary: "Headshot photographer",
           yelpId: "charm-city-headshots-baltimore",
-          icon:  "img/icons/photo.png",
-          icon_selected:  "img/icons_selected/photo.png"
+          icon:  "img/icons/photo.PNG",
+          icon_selected:  "img/icons_selected/photo.PNG"
 
   },
 
@@ -109,8 +109,8 @@ var locations = [
           categories: ["salon"],
           summary: "Hair salon",
           yelpId: "nv-salon-collective-baltimore",
-          icon: "img/icons/barber.png",
-          icon_selected:  "img/icons_selected/barber.png"
+          icon: "img/icons/barber.PNG",
+          icon_selected:  "img/icons_selected/barber.PNG"
 
   },
 
@@ -121,8 +121,8 @@ var locations = [
           categories: ["barber"],
           summary: "Barber shop",
           yelpId: "old-bank-barbers-baltimore",
-          icon: "img/icons/barber.png",
-          icon_selected:  "img/icons_selected/barber.png"
+          icon: "img/icons/barber.PNG",
+          icon_selected:  "img/icons_selected/barber.PNG"
 
   },
 
@@ -134,8 +134,8 @@ var locations = [
           categories: ["other"],
           summary: "Ice Cream",
           yelpId: "the-charmery-baltimore",
-          icon: "img/icons/icecream.png",
-          icon_selected:  "img/icons_selected/icecream.png"
+          icon: "img/icons/icecream.PNG",
+          icon_selected:  "img/icons_selected/icecream.PNG"
 
   },
 
