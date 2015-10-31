@@ -3,7 +3,8 @@ Neighborhood Map Project for Udacity Nanodegree
 
 
 
-To start, simply download the full repository and then drag index.html into your favorite browser
+To start, simply download the full repository and then drag index.html into your favorite browser. Alternatively, 
+open up http://dennisdrenner.github.io/HampdenMap/. 
 
 Application initializes showing all locations on the map and in the listview. Locations can be further
 filtered by choosing a category or categories (bar, shop, restaurant), or by typing in some search text to match the location name. 
