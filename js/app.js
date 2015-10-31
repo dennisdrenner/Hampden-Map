@@ -27,8 +27,8 @@ var Location = function (data) {
     this.icon_selected = data.icon_selected;
 
     self.address = function () {
-        return self.streetNumber + " " + self.street + " " 
-        + self.city + ", " + self.state + " " + self.zipcode;
+        return self.streetNumber + " " + self.street + " " +
+        self.city + ", " + self.state + " " + self.zipcode;
     };
 
     //Marker animation. Bounce after click 
@@ -37,7 +37,7 @@ var Location = function (data) {
       window.setTimeout(function () {
         self.marker.setAnimation(null);
       }, 1000);
-    }
+    };
 
     self.openInfoWindow = function () {
       var infoDiv = document.getElementById("infoDiv");
@@ -46,7 +46,7 @@ var Location = function (data) {
                       "<img src="+ '"' + self.img_url + '">' +
                       "<p>" + self.snippet_text + "</p>" + 
                       "<p>Yelp Review: <img src="+ '"' + self.rating_img_url + '"></p>';
-    }   
+    };   
 };
 
 
@@ -139,7 +139,7 @@ var locations = [
 
   },
 
-]
+];
 
 
 
@@ -182,7 +182,7 @@ function AppViewModel() {
       var infoDiv = document.getElementById("infoDiv");
       infoDiv.innerHTML = "";
       infoDiv.style.display = 'none'; 
-    }
+    };
 
    //The this.showMatches function adds location objects which match chosenCategories and/or the searchBox entry
   //to the self.matches array, and then updates the markers on the map
@@ -200,9 +200,9 @@ function AppViewModel() {
       //Nested loops needed as some locations have more than one category 
         var locations = self.locationObjList();
         var choices = self.chosenCategories();
-        for (i=0; i<locations.length;i++) {
-          for (j=0; j<choices.length; j++) {
-            for (k = 0; k<locations[i].categories.length; k++) {
+        for (var i=0; i<locations.length;i++) {
+          for (var j=0; j<choices.length; j++) {
+            for (var k = 0; k<locations[i].categories.length; k++) {
               if (choices[j] == locations[i].categories[k]) {
                 self.matches.push(locations[i]);
               }
@@ -228,10 +228,10 @@ function AppViewModel() {
              //if statement is necessary because marker.setMap does not exist until the mapMaker function (below) runs
             if (self.matches()[i].marker.setMap) {self.matches()[i].marker.setMap(map);}
           }
-        }
+        };
 
         //If no entry in searchBox, just return category matches and exit out of the function 
-        if (self.searchBox() == "" | self.searchBox() == "Search Hampden Map") {
+        if (self.searchBox() == "" || self.searchBox() == "Search Hampden Map") {
           self.mapFilter(); 
           return;
 
@@ -334,11 +334,11 @@ function AppViewModel() {
           });
 
           }(x));
-      };
+      }
     }
     mapMaker();
 
-    };
+    }
 
 
 ko.applyBindings(new AppViewModel());
@@ -367,7 +367,7 @@ function getYelpData (locationObj) {
 //If no Yelp ID exists, exit out of the function. Yelp ID is manually input, not all locations have a presence on Yelp
    if (locationObj.yelpId == "") { 
     return;
-   };
+   }
 
 //Construct URL for Yelp API call.  OAuth library will add signature to this later
   var yelp_url = 'https://api.yelp.com/v2/business/' + locationObj.yelpId;
