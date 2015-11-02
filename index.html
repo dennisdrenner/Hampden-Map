@@ -43,21 +43,23 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
      </a>
-    <h1 class="navbar-brand">HAMPDEN MAP</h1>
+   
 
-   </div>
-   <div id="slidemenu">
-            <div id="searchBox">
+               <div id="searchBox" class="navbar-brand"> 
                 <form>
 
-                   <input type="search" id="searchField" data-bind="value: searchBox">
+                   <input type="search" id="searchField" data-bind="value: searchBox" style="color:grey">
                 </form>
             </div>
+
+   </div>
+
+   <div id="slidemenu">
 
           <div id="searchForm">
             <h4>Categories</h4>
             <select data-bind="options: availableCategories, selectedOptions: chosenCategories, click: clearInfoDiv" size="6" multiple="true"></select>
-           </div>
+          </div>
 
         <div id="searchLocations">
             <div>
@@ -81,28 +83,32 @@
         </div>
 
    </div> <!-- /#slidemenu -->
-  </div>
- </div>
+
+  </div> <!-- /.container -->
+ </div>  <!-- /#slide-nav -->
   
   
   <!--wrap the page content do not style this-->
  <div id="page-content">
    
-  <div class="container" >
- 
+      <div class="container" >
 
-   </div>
-  <!-- /.container -->
+
+
+     
+
+      </div><!-- /.container -->
   
  </div>
  <!-- /#page-content -->
 
-
-
-<div id="mapWrapper">
-    <div id="hampdenMap">
+    <div id="mapWrapper">
+        <div id="hampdenMap">
+        </div>
     </div>
-</div>
+
+
+
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
