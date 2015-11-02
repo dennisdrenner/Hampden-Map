@@ -51,11 +51,12 @@ p.small {
     border-radius: 2px;
     box-sizing: border-box;
     border-bottom: 1px solid transparent;
-    padding: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 15px;
     transition-property: background, box-shadow;
     transition-duration: 0.3s;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
 }
+
 
 
 #searchForm {
@@ -75,6 +76,7 @@ p.small {
     transition-duration: 0.3s;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
 }
+
 
 #searchLocations {
     z-index: 2; 
@@ -112,14 +114,13 @@ p.small {
     padding-top: 20px;
 }
 
-
 #searchField {
-    border: 1px;
+    border: 0px;
     margin: 10px 10px 10px 10px;
 }
 
 #searchField:focus {
-    border: ;
+    border: none;
 
 }
 #mapWrapper {
@@ -129,7 +130,7 @@ p.small {
 
 
 
-/* ==================== SLIDER TEST ==================================
+/* ==================== SLIDER  ================================== */
 
 
 /* adjust body when menu is open */
@@ -158,31 +159,37 @@ body.slide-active {
     margin: 0;
     width: 30px;
     height: 40px;
-    padding: 10px 0 0 0;
+    padding: 10px 0 5px 0;
     border: 0;
     background: transparent;
 }
 /* icon bar prettyup - optional */
 #slide-nav .navbar-toggle > .icon-bar {
-    width: 100%;
+    width: 20px; /* 70%; */
     display: block;
-    height: 3px;
-    margin: 5px 0 0 0;
+    height: 2px;
+    margin: 5px 0 0 0px;
+    background-color: grey; 
 }
+
 #slide-nav .navbar-toggle.slide-active .icon-bar {
-    background: orange
+    background-color: orange;   
 }
+
+
 .navbar-header {
     position: relative;
     background-color: transparent;
-    
+
 }
 /* un fix the navbar when active so that all the menu items are accessible */
 .navbar.navbar-fixed-top.slide-active {
     position: relative
 }
-/* screw writing importants and shit, just stick it in max width since these classes are not shared between sizes */
+/* screw writing importants, just stick it in max width since these classes are not shared between sizes */
 @media (max-width:767px) { 
+
+
     #slide-nav .container {
         margin: 0;
         padding: 0!important;
@@ -191,12 +198,16 @@ body.slide-active {
         margin: 0 auto;
         padding: 0 15px;
     }
-    #slide-nav .navbar.slide-active {
+    
+/*
+    #slide-nav .slide-active {
         position: absolute;
         width: 80%;
         top: -1px;
         z-index: 1000;
     }
+
+*/
     #slide-nav #slidemenu {
         background: #f7f7f7;
         left: -100%;

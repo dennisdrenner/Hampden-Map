@@ -1,14 +1,14 @@
 $(document).ready(function () {
 
     //stick in the fixed 100% height behind the navbar but don't wrap it
-    //$('#slide-nav.navbar .container').append($('<div id="navbar-height-col"></div>'));
+    $('#slide-nav.navbar .container').append($('<div id="navbar-height-col"></div>'));
 
     // Enter your ids or classes
     var toggler = '.navbar-toggle';
-    var pagewrapper = '#page-content';
-    var navigationwrapper = '.navbar-header';
+    var pagewrapper = '#mapWrapper';//'#page-content';
+    var navigationwrapper = '#searchBox' //'.navbar-header';
     var menuwidth = '100%'; // the menu inside the slide menu itself
-    var slidewidth = '80%';
+    var slidewidth = '60%';
     var menuneg = '-100%';
     var slideneg = '-80%';
 
@@ -19,7 +19,6 @@ $(document).ready(function () {
 
         var selected = $(this).hasClass('slide-active');  //true if slide-active class is present on toggler 
 
-
         //The next four functions trigger 'animation' of slidemenu when clicking toggler  
         $('#slidemenu').stop().animate({
             left: selected ? menuneg : '0px'
@@ -29,13 +28,17 @@ $(document).ready(function () {
             left: selected ? slideneg : '0px'
         });
 
-        $(pagewrapper).stop().animate({
-            left: selected ? '0px' : slidewidth
-        });
+        //Uncommenting the code below will make the map move to the right as the slidemenu moves in
+        //otherwise map will stay put and slidemenu will just move over top of it 
 
-        $(navigationwrapper).stop().animate({
-            left: selected ? '0px' : slidewidth
-        });
+        // $(pagewrapper).stop().animate({
+        //     left: selected ? '0px' : slidewidth
+        // });
+
+
+        // $(navigationwrapper).stop().animate({
+        //     left: selected ? '0px' : slidewidth
+        // });
 
         $(this).toggleClass('slide-active', !selected);
 
@@ -46,8 +49,9 @@ $(document).ready(function () {
 
     });
 
+    
+    //Reset slidemenu when resizing viewport when viewport size > 767 px
     var selected = '#slidemenu, #page-content, body, .navbar, .navbar-header';
-
 
     $(window).on("resize", function () {
 

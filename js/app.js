@@ -254,7 +254,8 @@ function AppViewModel() {
     //Set up data for google map object defined below 
     var mapOptions = {
       center: { lat: 39.332769, lng: -76.635661},
-      zoom: 16
+      zoom: 16,
+      mapTypeControl: false,
       };
 
     //Define a new google map object 
