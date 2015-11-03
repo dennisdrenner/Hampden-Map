@@ -51,15 +51,15 @@ $(document).ready(function () {
 
     
     //Reset slidemenu when resizing viewport when viewport size > 767 px
-    // var selected = '#slidemenu, #page-content, body, .navbar, .navbar-header';
+    var selected = '#slidemenu, #page-content, body, .navbar, .navbar-header';
 
-    // $(window).on("resize", function () {
+    $(window).on("resize", function () {
 
-    //     if ($(window).width() > 767 && $('.navbar-toggle').is(':hidden')) {
-    //         $(selected).removeClass('slide-active');
-    //     }
+        if ($(window).width() > 767 && $('.navbar-toggle').is(':hidden')) {
+            $(selected).removeClass('slide-active');
+        }
 
-    // });
+    });
 
 
 });
