@@ -9,7 +9,7 @@ $(document).ready(function () {
     var navigationwrapper = '#searchBox' //'.navbar-header';
     var menuwidth = '100%'; // the menu inside the slide menu itself
     var slidewidth = '60%';
-    var menuneg = '-100%';
+    var menuneg = '-110%';
     var slideneg = '-80%';
 
 

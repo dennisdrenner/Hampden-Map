@@ -216,7 +216,7 @@ body.slide-active {
 
     #slide-nav #slidemenu {
         background: #f7f7f7;
-        left: -100%;
+        left: -110%;
         width: 80%;
         min-width: 0;
         position: absolute;
