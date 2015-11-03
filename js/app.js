@@ -186,7 +186,7 @@ function AppViewModel() {
 
    //The this.showMatches function adds location objects which match chosenCategories and/or the searchBox entry
   //to the self.matches array, and then updates the markers on the map
-  //the listview is updated by knockout data-bindings with the matches observable array 
+  //the listview is updated by knockout data-bindings with the 'matches' observable array 
 
    this.showMatches = ko.computed(function() {
       //First reset previous matches from array 
@@ -194,8 +194,7 @@ function AppViewModel() {
 
       //Reset filteredMatches array to empty 
         self.filteredMatches = [];
-       
-
+        
       //Iterate through the locations and find locations which match chosenCategories
       //Nested loops needed as some locations have more than one category 
         var locations = self.locationObjList();
@@ -209,6 +208,8 @@ function AppViewModel() {
             } 
           }
         }
+
+
 
         //If user selects "all", add all of the location objects to the array  
         if (self.chosenCategories()[0] == "all") { 
@@ -229,14 +230,13 @@ function AppViewModel() {
             if (self.matches()[i].marker.setMap) {self.matches()[i].marker.setMap(map);}
           }
         };
-
         //If no entry in searchBox, just return category matches and exit out of the function 
         if (self.searchBox() == "" || self.searchBox() == "Search Hampden Map") {
           self.mapFilter(); 
-          return;
-
+          
         //Else if there is relevant text in the searchBox,  add matching locations to the array filteredMatches 
         } else {
+           
             for (i=0; i<self.matches().length;i++) {
                 if (self.matches()[i].name.search(self.searchBox()) !== -1) {
                   self.filteredMatches.push(self.matches()[i]);
@@ -336,7 +336,8 @@ function AppViewModel() {
 
           }(x));
       }
-    }
+    }  //end of mapMaker function 
+
     mapMaker();
 
     }
