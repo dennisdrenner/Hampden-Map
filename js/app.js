@@ -175,7 +175,8 @@ function AppViewModel() {
       for (var i=0; i<self.locationObjList().length;i++) {
         self.locationObjList()[i].marker.setIcon(self.locationObjList()[i].icon);
       }
-    }
+    };
+    
     //Iterate through locations array (from the Model), creating new location objects and 
     //adding them to the locationObjList observable array
     locations.forEach(function(locationObj) {
@@ -264,7 +265,7 @@ function AppViewModel() {
           }
         };
         //If no entry in searchBox, just return category matches and exit out of the function 
-        if (self.searchBox() == "" || self.searchBox() == "Search Hampden Map") {
+        if (self.searchBox() === "" || self.searchBox() == "Search Hampden Map") {
           self.mapFilter(); 
           
         //Else if there is relevant text in the searchBox,  add matching locations to the array filteredMatches 
@@ -393,7 +394,7 @@ function getYelpData (locationObj) {
   var YELP_TOKEN_SECRET = 'yXv1Uc7SeI4eAEw4xUqaq_ncDI0';
 
 //If no Yelp ID exists, exit out of the function. Yelp ID is manually input, not all locations have a presence on Yelp
-   if (locationObj.yelpId == "") { 
+   if (locationObj.yelpId === "") { 
     return;
    }
 

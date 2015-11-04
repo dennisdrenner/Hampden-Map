@@ -53,16 +53,13 @@
             <h4>Categories</h4>
             <select data-bind="options: availableCategories, selectedOptions: chosenCategories, 
             click: function () { clearInfoDiv(); resetMarkerIcons(); }"
-            size="6" multiple="true"></select>
+            size="6" multiple></select>
           </div>
 
         <div id="searchLocations">
             <div>
                 <table>
-                    <thead>
-                        <h4>Locations</h4>
-                    </thead>
-
+                    <thead><tr><th>Locations</th></tr></thead>
                     <tbody data-bind="foreach: matches">
                         <tr> 
                              <td data-bind="text: name, click: function () { bounce(); $parent.resetMarkerIcons(); openInfoWindow();}" ></td>
