@@ -26,6 +26,8 @@ var Location = function (data) {
     this.icon = data.icon; // custom icon for Google map
     this.icon_selected = data.icon_selected;
 
+    //self.resetMarkerIcons = function () {console.log('running the function');}
+
     self.address = function () {
         return self.streetNumber + " " + self.street + " " +
         self.city + ", " + self.state + " " + self.zipcode;
@@ -42,10 +44,12 @@ var Location = function (data) {
     self.openInfoWindow = function () {
       var infoDiv = document.getElementById("infoDiv");
       infoDiv.style.display = "block";
+      googleMap.setCenter(self.latLng);
       infoDiv.innerHTML = "<p>" + self.name + "</p>"+
                       "<img src="+ '"' + self.img_url + '">' +
                       "<p>" + self.snippet_text + "</p>" + 
                       "<p>Yelp Review: <img src="+ '"' + self.rating_img_url + '"></p>';
+      self.marker.setIcon(self.icon_selected);
     };   
 };
 
@@ -143,18 +147,40 @@ var locations = [
 
 
 
+/* ------------------------ GOOGLE MAP INITIAL SET UP -----------------------*/
+
+  //Set up data for google map object defined below 
+  var mapOptions = {
+    center: { lat: 39.328198, lng: -76.634553},  
+    zoom: 16,
+    mapTypeControl: false,
+    };
+
+ var googleMap = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
+
 /* ----------------------- VIEW MODEL ----------------------- */
 
+
 function AppViewModel() {
+
 
    var self = this; 
 
     //List of all locations in the locations array in the model
    self.locationObjList = ko.observableArray([]);
 
+
+     //Utility function to iterate through locationObjList and set all icons to the unselected version
+    self.resetMarkerIcons = function () {
+      for (var i=0; i<self.locationObjList().length;i++) {
+        self.locationObjList()[i].marker.setIcon(self.locationObjList()[i].icon);
+      }
+    }
     //Iterate through locations array (from the Model), creating new location objects and 
     //adding them to the locationObjList observable array
     locations.forEach(function(locationObj) {
+        locationObj.resetMarkerIcons = self.resetMarkerIcons;
+        //console.log("LOCATION OBJECT:", locationObj, "RESET MI", locationObj.resetMarkerIcons);
         self.locationObjList.push(new Location(locationObj));
     }); 
 
@@ -178,10 +204,17 @@ function AppViewModel() {
     //an array to hold locations which match category and/or searchBox entries
     self.filteredMatches = []; 
 
+
+  
+    
+
+    //Clear infoDiv when doing a new search and zoom the map back out and recenter in init position
     self.clearInfoDiv = function () {
       var infoDiv = document.getElementById("infoDiv");
       infoDiv.innerHTML = "";
       infoDiv.style.display = 'none'; 
+      self.map.setZoom(15);
+      self.map.setCenter(mapOptions.center);
     };
 
    //The this.showMatches function adds location objects which match chosenCategories and/or the searchBox entry
@@ -227,7 +260,7 @@ function AppViewModel() {
           //set markers on map for matched locations
           for (i=0; i<self.matches().length; i++) {
              //if statement is necessary because marker.setMap does not exist until the mapMaker function (below) runs
-            if (self.matches()[i].marker.setMap) {self.matches()[i].marker.setMap(map);}
+            if (self.matches()[i].marker.setMap) {self.matches()[i].marker.setMap(self.map);}
           }
         };
         //If no entry in searchBox, just return category matches and exit out of the function 
@@ -251,21 +284,16 @@ function AppViewModel() {
     });  //End of this.showMatches function 
   
 
-    //Set up data for google map object defined below 
-    var mapOptions = {
-      center: { lat: 39.328198, lng: -76.634553},  
-      zoom: 16,
-      mapTypeControl: false,
-      };
+
 
     //Define a new google map object 
-    var map = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
+    self.map = googleMap; 
 
     //Add an event listener to resize map when user changes browser window size
     google.maps.event.addDomListener(window, "resize", function() {
-     var center = map.getCenter();
-     google.maps.event.trigger(map, "resize");
-     map.setCenter(center); 
+     var center = self.map.getCenter();
+     google.maps.event.trigger(self.map, "resize");
+     self.map.setCenter(center); 
     });
     
 
@@ -290,7 +318,7 @@ function AppViewModel() {
                         icon: self.locationObjList()[x].icon,
                         //icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
                         position: latLng,
-                        map: map, 
+                        map: self.map, 
                   });
 
                   //Event listener on marker injects info on the location into the infoDiv
@@ -298,20 +326,19 @@ function AppViewModel() {
                   //(to remove old green markers from previously selected locations)
 
                   marker.addListener('click', function() {
-                   // TO DO:  reset map position based on clicked location
-                   // centering the map on the location is not ideal however
-                   //also animate and smooth the transition
-                   // map.setCenter(self.locationObjList()[x].latLng); 
+                    self.map.setCenter(self.locationObjList()[x].latLng); 
+                    self.map.setZoom(17);
                     infoDiv.style.display = "block";
                     infoDiv.innerHTML = "<p>" + self.locationObjList()[x].name + "</p>"+
                       "<img src="+ '"' + self.locationObjList()[x].img_url + '">' +
                       "<p>" + self.locationObjList()[x].snippet_text + "</p>" + 
                       "<p>Yelp Review: <img src="+ '"' + self.locationObjList()[x].rating_img_url + '"></p>';
 
-                    //Change all icons to red 
-                    for (i=0; i<self.locationObjList().length; i++) {
-                      self.locationObjList()[i].marker.setIcon(self.locationObjList()[i].icon);
-                    }
+                    //Change all icons to unselected version
+                    self.resetMarkerIcons(); 
+                    // for (i=0; i<self.locationObjList().length; i++) {
+                    //   self.locationObjList()[i].marker.setIcon(self.locationObjList()[i].icon);
+                    // }
 
                     //Change marker to selected version
                     marker.setIcon(self.locationObjList()[x].icon_selected);
@@ -331,7 +358,7 @@ function AppViewModel() {
 
         //Notify of failure in mapMaker (jQuery default is to fail silently)
             .fail(function() {
-            console.log("FAILURE IN MAPMAKER FUNCTION");
+            alert("FAILURE IN MAPMAKER FUNCTION");
           });
 
           }(x));
@@ -341,7 +368,6 @@ function AppViewModel() {
     mapMaker();
 
     }
-
 
 ko.applyBindings(new AppViewModel());
 
@@ -401,7 +427,7 @@ function getYelpData (locationObj) {
       locationObj.rating_img_url = results.rating_img_url; 
     },
     error: function(response) {
-      console.log("THERE WAS AN ERROR in GET YELP DATA: ", response);
+      alert("THERE WAS AN ERROR in GET YELP DATA: ", response);
     }
 
     
