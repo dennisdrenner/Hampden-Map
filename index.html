@@ -51,7 +51,9 @@
    <div id="slidemenu">
           <div id="searchForm">
             <h4>Categories</h4>
-            <select data-bind="options: availableCategories, selectedOptions: chosenCategories, click: clearInfoDiv" size="6" multiple="true"></select>
+            <select data-bind="options: availableCategories, selectedOptions: chosenCategories, 
+            click: function () { clearInfoDiv(); resetMarkerIcons(); }"
+            size="6" multiple="true"></select>
           </div>
 
         <div id="searchLocations">
