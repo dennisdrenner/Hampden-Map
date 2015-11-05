@@ -118,6 +118,7 @@ p.small {
 #searchField {
     border: 0px;
     margin: 10px 10px 10px 10px;
+    color: grey;
 }
 
 #searchField:focus {
