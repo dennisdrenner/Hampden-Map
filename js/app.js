@@ -272,7 +272,7 @@ function AppViewModel() {
         } else {
            
             for (i=0; i<self.matches().length;i++) {
-                if (self.matches()[i].name.search(self.searchBox()) !== -1) {
+                if (self.matches()[i].name.toLowerCase().search(self.searchBox().toLowerCase()) !== -1) {
                   self.filteredMatches.push(self.matches()[i]);
                 }
             }
