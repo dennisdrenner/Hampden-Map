@@ -4,9 +4,13 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+html {
+    height: 100%;
+}
+
 body {
     overflow-x: hidden; 
-    height: 1000px;
+    height: 100%; 
     width: 100%;
     margin: 0;
     padding: 0;
@@ -125,10 +129,13 @@ p.small {
     border: none;
 
 }
+
+/*
 #mapWrapper {
     width: 100%;
     padding: 0px;
 }
+*/
 
 
 
@@ -285,6 +292,17 @@ body.slide-active {
     .navbar-header {
         left: 0!important
     }
+}
+
+*/
+
+
+/*
+.container-fluid {
+    width:100%;
+    position:absolute;
+    top:0;
+    padding:0;
 }
 
 */
