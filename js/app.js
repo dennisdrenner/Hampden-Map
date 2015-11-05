@@ -337,20 +337,24 @@ function AppViewModel() {
 
                     //Change all icons to unselected version
                     self.resetMarkerIcons(); 
-                    // for (i=0; i<self.locationObjList().length; i++) {
-                    //   self.locationObjList()[i].marker.setIcon(self.locationObjList()[i].icon);
-                    // }
-
+                
                     //Change marker to selected version
                     marker.setIcon(self.locationObjList()[x].icon_selected);
-                    //marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');  
-                    
+
+                    //toggle slide-active class on the slidemenu when clicking on the marker
+                    //this will slide the slide menu back into the frame if it wasn't already activated
+                    $('#slidemenu').stop().animate({left: '0px'});
+                    $('#navbar-height-col').stop().animate({left: '0px'});
+                    $('#slidemenu, body, #page-content, .navbar-toggle').toggleClass('slide-active', true); 
+
                     //Marker will bounce for 1 second when clicked             
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                     window.setTimeout(function () {
                       marker.setAnimation(null);
-                    }, 1000);                  
-                  });
+                    }, 1000);   
+
+
+                  });  //end of marker.addListener
                  
                   //attach latLng and marker to location objects as properties
                   self.locationObjList()[x].latLng = latLng;
