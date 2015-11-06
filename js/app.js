@@ -163,7 +163,6 @@ var locations = [
 
 function AppViewModel() {
 
-
    var self = this; 
 
     //List of all locations in the locations array in the model
@@ -200,14 +199,71 @@ function AppViewModel() {
     });
 
     //search field for searching locations 
-    this.searchBox =  ko.observable("Search Hampden Map");
+    self.searchBox =  ko.observable("Search Hampden Map");
+
+    //create a list of location names from the location object list to be used
+    //in the autocomplete widget on the searchField
+    self.options = self.locationObjList().map(function(locationObj) {
+      return { 
+        label: locationObj.name,
+        value: locationObj.name,
+        object: locationObj
+      };
+    });
+
+    //CUSTOM BINDING FOR AUTOCOMPLETE 
+
+    ko.bindingHandlers.autoComplete = {
+    // Only using init event because the 
+    // Jquery.UI.AutoComplete widget will take care of the update callbacks
+      init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+          // valueAccessor = { selected: mySelectedOptionObservable, options: myArrayOfLabelValuePairs }
+
+          var settings = ko.unwrap(valueAccessor());
+          //console.log("SETTINGS--", settings);
+
+          var selectedOption = settings.selected;
+          //console.log("SETTINGS selected--", settings.selected());
+
+          var options = settings.options;
+
+          var updateElementValueWithLabel = function (event, ui) {
+              // Stop the default behavior
+              event.preventDefault();
+
+              // Update the value of the html element with the label 
+              // of the activated option in the list (ui.item)
+              $(element).val(ui.item.label);
+              //console.log("ui.item", ui.item.label); 
+
+              // Update our SelectedOption observable
+              if(typeof ui.item !== "undefined") {
+                  // ui.item - id|label|...
+                  self.searchBox(ui.item.label);
+              }
+          };
+
+          $(element).autocomplete({
+              source: options,
+              select: function (event, ui) {
+                  updateElementValueWithLabel(event, ui);
+                  //console.log("select--event--ui", event, "LABEL---", ui.item.label);
+              },
+              focus: function (event, ui) {
+                  updateElementValueWithLabel(event, ui);
+                  //console.log("focus--event--ui", event, "LABEL---", ui.item.label);
+              },
+              change: function (event, ui) {
+                  updateElementValueWithLabel(event, ui);
+                  //console.log("change--event--ui", event, ui.item.label);
+                  //console.log("SEARCHBOX()---", self.searchBox());
+              }
+          });
+      }
+    };
 
     //an array to hold locations which match category and/or searchBox entries
     self.filteredMatches = []; 
-
-
-  
-    
 
     //Clear infoDiv when doing a new search and zoom the map back out and recenter in init position
     self.clearInfoDiv = function () {
@@ -223,6 +279,7 @@ function AppViewModel() {
   //the listview is updated by knockout data-bindings with the 'matches' observable array 
 
    this.showMatches = ko.computed(function() {
+       console.log("Running this.showMatches function, searchBox value is", self.searchBox());
       //First reset previous matches from array 
         self.matches([]);
 
@@ -243,7 +300,7 @@ function AppViewModel() {
           }
         }
 
-
+        console.log("MATCHES EARLY IN FUNCTION--", self.matches());
 
         //If user selects "all", add all of the location objects to the array  
         if (self.chosenCategories()[0] == "all") { 
@@ -252,6 +309,7 @@ function AppViewModel() {
 
         //Now we will filter the matches array further by selecting only locations which match the 
         //search box entry 
+        
         self.mapFilter = function () {
           for (i=0; i<self.locationObjList().length; i++) {
             //remove all markers from map
@@ -263,16 +321,20 @@ function AppViewModel() {
              //if statement is necessary because marker.setMap does not exist until the mapMaker function (below) runs
             if (self.matches()[i].marker.setMap) {self.matches()[i].marker.setMap(self.map);}
           }
-        };
+        };  //end of mapFilter()
+
         //If no entry in searchBox, just return category matches and exit out of the function 
         if (self.searchBox() === "" || self.searchBox() == "Search Hampden Map") {
+          console.log("No entry in search box");
           self.mapFilter(); 
           
         //Else if there is relevant text in the searchBox,  add matching locations to the array filteredMatches 
         } else {
            
             for (i=0; i<self.matches().length;i++) {
-                if (self.matches()[i].name.toLowerCase().search(self.searchBox().toLowerCase()) !== -1) {
+
+                 console.log("yes, entry in search box");
+                if (self.matches()[i].name.search(self.searchBox()) !== -1) {
                   self.filteredMatches.push(self.matches()[i]);
                 }
             }
@@ -282,6 +344,7 @@ function AppViewModel() {
             self.mapFilter(); 
         }
 
+        console.log("Value of matches array is now at the end", self.matches());
     });  //End of this.showMatches function 
   
 
