@@ -158,6 +158,10 @@ var locations = [
 
  var googleMap = new google.maps.Map(document.getElementById('hampdenMap'), mapOptions);
 
+// google.maps.event.addListenerOnce(googleMap,"projection_changed", function() {
+//    alert("projection:"+googleMap.getProjection());
+
+
 /* ----------------------- VIEW MODEL ----------------------- */
 
 
@@ -272,6 +276,8 @@ function AppViewModel() {
       infoDiv.style.display = 'none'; 
       self.map.setZoom(15);
       self.map.setCenter(mapOptions.center);
+
+      //console.log("POINT--", fromLatLngToPixel(mapOptions.center));
     };
 
    //The this.showMatches function adds location objects which match chosenCategories and/or the searchBox entry
@@ -334,7 +340,7 @@ function AppViewModel() {
             for (i=0; i<self.matches().length;i++) {
 
                  console.log("yes, entry in search box");
-                if (self.matches()[i].name.search(self.searchBox()) !== -1) {
+                if (self.matches()[i].name.toLowerCase().search(self.searchBox().toLowerCase()) !== -1) {
                   self.filteredMatches.push(self.matches()[i]);
                 }
             }
@@ -432,10 +438,36 @@ function AppViewModel() {
           }(x));
       }
     }  //end of mapMaker function 
+ mapMaker();
+}
 
-    mapMaker();
+   
 
-    }
+
+
+// //Calculate Pixel location from LatLng on Google map (to aid in centering)
+
+// var fromLatLngToPixel = function (position) {
+//   var scale = Math.pow(2, googleMap.getZoom());
+//   var proj = googleMap.getProjection();
+//   console.log("PROJ--", proj);
+//   console.log("GOOGLE MAP", googleMap);
+//   var bounds = googleMap.getBounds();
+
+//   var nw = proj.fromLatLngToPoint(
+//     new google.maps.LatLng(
+//       bounds.getNorthEast().lat(),
+//       bounds.getSouthWest().lng()
+//     ));
+//   var point = proj.fromLatLngToPoint(position);
+
+//   return new google.maps.Point(
+//     Math.floor((point.x - nw.x) * scale),
+//     Math.floor((point.y - nw.y) * scale));
+// }
+
+// console.log("POSITION-", fromLatLngToPixel((mapOptions.center)));
+
 
 ko.applyBindings(new AppViewModel());
 

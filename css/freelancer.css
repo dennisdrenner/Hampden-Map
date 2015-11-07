@@ -49,7 +49,7 @@ p.small {
     width: 392px; 
     height: 40px;
     left: 20px;
-    top: 65px;  
+    top: 20px;  
     overflow:hidden;
     background: #fff;
     border-radius: 2px;
@@ -69,7 +69,7 @@ p.small {
     width: 392px; 
     height: 150px;
     left: 20px;
-    top: 110px;  
+    top: 64px;  
     overflow:hidden;
     background: #fff;
     border-radius: 2px;
@@ -86,7 +86,7 @@ p.small {
     z-index: 2; 
     position: absolute;
     left: 20px;
-    top: 265px; 
+    top: 220px; 
     width: 392px; 
     overflow: auto;
     padding-left: 20px;
@@ -108,7 +108,7 @@ p.small {
     z-index: 2;
     position: absolute;
     overflow: auto;
-    top: 420px;  
+    top: 375px;  
     left: 20px; 
     width: 392px; 
     height: 300px;
