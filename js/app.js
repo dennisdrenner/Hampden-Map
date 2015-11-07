@@ -26,7 +26,6 @@ var Location = function (data) {
     this.icon = data.icon; // custom icon for Google map
     this.icon_selected = data.icon_selected;
 
-    //self.resetMarkerIcons = function () {console.log('running the function');}
 
     self.address = function () {
         return self.streetNumber + " " + self.street + " " +
@@ -184,7 +183,6 @@ function AppViewModel() {
     //adding them to the locationObjList observable array
     locations.forEach(function(locationObj) {
         locationObj.resetMarkerIcons = self.resetMarkerIcons;
-        //console.log("LOCATION OBJECT:", locationObj, "RESET MI", locationObj.resetMarkerIcons);
         self.locationObjList.push(new Location(locationObj));
     }); 
 
@@ -224,10 +222,8 @@ function AppViewModel() {
           // valueAccessor = { selected: mySelectedOptionObservable, options: myArrayOfLabelValuePairs }
 
           var settings = ko.unwrap(valueAccessor());
-          //console.log("SETTINGS--", settings);
 
           var selectedOption = settings.selected;
-          //console.log("SETTINGS selected--", settings.selected());
 
           var options = settings.options;
 
@@ -238,7 +234,6 @@ function AppViewModel() {
               // Update the value of the html element with the label 
               // of the activated option in the list (ui.item)
               $(element).val(ui.item.label);
-              //console.log("ui.item", ui.item.label); 
 
               // Update our SelectedOption observable
               if(typeof ui.item !== "undefined") {
@@ -251,19 +246,29 @@ function AppViewModel() {
               source: options,
               select: function (event, ui) {
                   updateElementValueWithLabel(event, ui);
-                  //console.log("select--event--ui", event, "LABEL---", ui.item.label);
+                  //self.searchBox(ui.item.label);
               },
               focus: function (event, ui) {
                   updateElementValueWithLabel(event, ui);
-                  //console.log("focus--event--ui", event, "LABEL---", ui.item.label);
+                  self.searchBox("DOUCHBAG");
               },
               change: function (event, ui) {
                   updateElementValueWithLabel(event, ui);
-                  //console.log("change--event--ui", event, ui.item.label);
-                  //console.log("SEARCHBOX()---", self.searchBox());
               }
-          });
-      }
+            })
+
+          // .keydown(function(e){
+          //         if (e.keyCode === 13) {
+          //         $("#searchField").trigger('submit');
+          //         //self.searchBox("Milagrode");
+          //         console.log("ENTER KEY PRESSED, SUBMITTED TEXT:", self.searchBox());
+          //         }
+          //      })
+      },
+      //  update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+      //   console.log("UPDATE FUNCTION", self.searchBox());
+      // }
+
     };
 
     //an array to hold locations which match category and/or searchBox entries
@@ -277,7 +282,6 @@ function AppViewModel() {
       self.map.setZoom(15);
       self.map.setCenter(mapOptions.center);
 
-      //console.log("POINT--", fromLatLngToPixel(mapOptions.center));
     };
 
    //The this.showMatches function adds location objects which match chosenCategories and/or the searchBox entry
@@ -285,7 +289,6 @@ function AppViewModel() {
   //the listview is updated by knockout data-bindings with the 'matches' observable array 
 
    this.showMatches = ko.computed(function() {
-       console.log("Running this.showMatches function, searchBox value is", self.searchBox());
       //First reset previous matches from array 
         self.matches([]);
 
@@ -305,8 +308,6 @@ function AppViewModel() {
             } 
           }
         }
-
-        console.log("MATCHES EARLY IN FUNCTION--", self.matches());
 
         //If user selects "all", add all of the location objects to the array  
         if (self.chosenCategories()[0] == "all") { 
@@ -331,15 +332,12 @@ function AppViewModel() {
 
         //If no entry in searchBox, just return category matches and exit out of the function 
         if (self.searchBox() === "" || self.searchBox() == "Search Hampden Map") {
-          console.log("No entry in search box");
           self.mapFilter(); 
           
         //Else if there is relevant text in the searchBox,  add matching locations to the array filteredMatches 
         } else {
            
             for (i=0; i<self.matches().length;i++) {
-
-                 console.log("yes, entry in search box");
                 if (self.matches()[i].name.toLowerCase().search(self.searchBox().toLowerCase()) !== -1) {
                   self.filteredMatches.push(self.matches()[i]);
                 }
@@ -349,8 +347,6 @@ function AppViewModel() {
             self.matches(self.filteredMatches);
             self.mapFilter(); 
         }
-
-        console.log("Value of matches array is now at the end", self.matches());
     });  //End of this.showMatches function 
   
 
@@ -422,7 +418,6 @@ function AppViewModel() {
                       marker.setAnimation(null);
                     }, 1000);   
 
-
                   });  //end of marker.addListener
                  
                   //attach latLng and marker to location objects as properties
@@ -441,11 +436,8 @@ function AppViewModel() {
  mapMaker();
 }
 
-   
-
-
-
-// //Calculate Pixel location from LatLng on Google map (to aid in centering)
+//TO DO: Get this to work, center marker depending on map canvas, keep marker from being hidden by infoDiv  
+//Calculate Pixel location from LatLng on Google map (to aid in centering)
 
 // var fromLatLngToPixel = function (position) {
 //   var scale = Math.pow(2, googleMap.getZoom());
