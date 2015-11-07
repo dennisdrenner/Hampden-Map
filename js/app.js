@@ -250,7 +250,6 @@ function AppViewModel() {
               },
               focus: function (event, ui) {
                   updateElementValueWithLabel(event, ui);
-                  self.searchBox("DOUCHBAG");
               },
               change: function (event, ui) {
                   updateElementValueWithLabel(event, ui);
