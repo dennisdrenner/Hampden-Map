@@ -240,6 +240,7 @@ function AppViewModel() {
               if (ui.item) { 
                   self.searchBox(ui.item.label);
               }
+
           };
 
           $(element).autocomplete({
@@ -340,6 +341,19 @@ function AppViewModel() {
             //the text in the search box
             self.matches(self.filteredMatches);
             self.mapFilter(); 
+
+
+            //toggle slide-active class on the slidemenu when clicking on the marker
+            //this will slide the slide menu back into the frame if it wasn't already activated
+            if (self.matches()[0]) {
+              self.matches()[0].openInfoWindow();
+              $('#slidemenu').stop().animate({left: '0px'});
+              $('#navbar-height-col').stop().animate({left: '0px'});
+              $('#slidemenu, body, #page-content, .navbar-toggle').toggleClass('slide-active', true); 
+
+            } else {
+              self.clearInfoDiv();
+            }
         }
     });  //End of this.showMatches function 
   
