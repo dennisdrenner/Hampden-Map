@@ -120,14 +120,18 @@ p.small {
 }
 
 #searchField {
-    border: 0px;
+    border-style: none; 
+    border-color: transparent;
     margin: 10px 10px 10px 10px;
     color: grey;
+   
 }
 
-#searchField:focus {
-    border: none;
 
+#searchField:focus {
+    border-style: none;
+    border-color: transparent;
+    outline: 0;
 }
 
 /*

@@ -233,11 +233,11 @@ function AppViewModel() {
 
               // Update the value of the html element with the label 
               // of the activated option in the list (ui.item)
-              $(element).val(ui.item.label);
+              if (ui.item) { $(element).val(ui.item.label); }              
 
-              // Update our SelectedOption observable
-              if(typeof ui.item !== "undefined") {
-                  // ui.item - id|label|...
+              //Update our SelectedOption observable
+              //The if statement prevents error when there is no ui.item (because user enters their own text)
+              if (ui.item) { 
                   self.searchBox(ui.item.label);
               }
           };
@@ -246,7 +246,6 @@ function AppViewModel() {
               source: options,
               select: function (event, ui) {
                   updateElementValueWithLabel(event, ui);
-                  //self.searchBox(ui.item.label);
               },
               focus: function (event, ui) {
                   updateElementValueWithLabel(event, ui);
