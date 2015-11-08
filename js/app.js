@@ -254,20 +254,16 @@ function AppViewModel() {
               change: function (event, ui) {
                   updateElementValueWithLabel(event, ui);
               }
-            })
-
-          // .keydown(function(e){
-          //         if (e.keyCode === 13) {
-          //         $("#searchField").trigger('submit');
-          //         //self.searchBox("Milagrode");
-          //         console.log("ENTER KEY PRESSED, SUBMITTED TEXT:", self.searchBox());
-          //         }
-          //      })
+            //Check for enter key (keyCode 13) and submit any text in the searchField
+            //This allows us to enter text not suggested by autocomplete 
+            }).keydown(function(e){
+                  if (e.keyCode === 13) {
+                  $("#searchField").trigger('submit');
+                  self.searchBox($('#searchField').val());
+                  } 
+               });
       },
-      //  update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-      //   console.log("UPDATE FUNCTION", self.searchBox());
-      // }
-
+     
     };
 
     //an array to hold locations which match category and/or searchBox entries
