@@ -3,32 +3,24 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <title>Hampden Neighborhood Map</title>
+	<title>Hampden Neighborhood Map</title>
 
-    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="css/freelancer.css" rel="stylesheet">
+	<!-- Custom Fonts -->
+	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+	<link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css"> 
 
-    <!-- Custom Fonts -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css"> 
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<!-- Custom CSS -->
+	<link href="css/freelancer.css" rel="stylesheet">
 
 </head>
 
@@ -37,96 +29,88 @@
  <div id="slide-nav">
   <div class="container">
 
-               <div id="searchBox" > 
-                  <a class="navbar-toggle" id="navbar-toggler"> 
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                  </a>
-                       <input autofocus="autofocus" placeholder="Search Hampden Map" type="search" id="searchField" data-bind="autoComplete: { selected: searchBox, options: options }"/>
-
-                       <!-- Debugging 
-                    <p data-bind="text: searchBox()"></p>  --> 
-
-                      <!--  "value: searchBox">  -->
-                </div>
+			   <div id="searchBox" > 
+				  <a class="navbar-toggle" id="navbar-toggler"> 
+					  <span class="sr-only">Toggle navigation</span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+				  </a>
+					   <input autofocus="autofocus" placeholder="Search Hampden Map" type="search" id="searchField" data-bind="autoComplete: { selected: searchBox, options: options }"/>
+				</div>
 
    <div id="slidemenu">
-          <div id="searchForm">
-            <h4>Categories</h4>
-            <select data-bind="options: availableCategories, selectedOptions: chosenCategories, 
-            click: function () { clearInfoDiv(); resetMarkerIcons(); }"
-            size="6" multiple></select>
-          </div>
+		  <div id="searchForm">
+			<h4>Categories</h4>
+			<select data-bind="options: availableCategories, selectedOptions: chosenCategories, 
+			click: function () { clearInfoDiv(); resetMarkerIcons(); }"
+			size="6" multiple></select>
+		  </div>
 
-        <div id="searchLocations">
-            <div>
-                <table>
-                    <thead><tr><th>Locations</th></tr></thead>
-                    <tbody data-bind="foreach: matches">
-                        <tr> 
-                             <td data-bind="text: name, click: function () { bounce(); $parent.resetMarkerIcons(); openInfoWindow();}" ></td>
-                        </tr>    
-                    </tbody>
-                </table>
-            </div>
-        </div>
+		<div id="searchLocations">
+			<div>
+				<table>
+					<thead><tr><th>Locations</th></tr></thead>
+					<tbody data-bind="foreach: matches">
+						<tr> 
+							 <td data-bind="text: name, click: function () { bounce(); $parent.resetMarkerIcons(); openInfoWindow();}" ></td>
+						</tr>    
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-        <div id="infoDiv">
-            <div>      
-            </div>
-        </div>
+		<div id="infoDiv">
+			<div>      
+			</div>
+		</div>
    </div> <!-- /#slidemenu -->
 
   </div> <!-- /.container -->
 
  </div>  <!-- /#slide-nav -->
   
-    <div id="mapWrapper">
-        <div id="hampdenMap">
-        </div>
-    </div>
+	<div id="mapWrapper">
+		<div id="hampdenMap">
+		</div>
+	</div>
 
 
+	<!-- jQuery and jQueryUI-->
+	<script src="js/jquery.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
-    <!-- jQuery and jQueryUI-->
-    <script src="js/jquery.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+	<!-- Custom Theme JavaScript -->
+	<script src="js/freelancer.js"></script>  
 
-    <!-- Custom Theme JavaScript -->
-    <script src="js/freelancer.js"></script>  
+	<!-- Slider Menu Javascript -->
+	<script src="js/slider.js"></script>
 
-    <!-- Slider Menu Javascript -->
-    <script src="js/slider.js"></script>
+	<!-- OAuth signature library --> 
+	<script src="bower_components/oauth-signature/dist/oauth-signature.js"></script>  
 
-    <!-- OAuth signature library --> 
-    <script src="bower_components/oauth-signature/dist/oauth-signature.js"></script>  
+	<script>
+	//Delay loading of js/app.js until Google maps JS is fully loaded 
+	var appLoader = function () {
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+		script.src = "js/app.js"
+		document.getElementsByTagName("head")[0].appendChild(script);
+	}
+	</script>
 
-    <script>
-    //Delay loading of js/app.js until Google maps JS is fully loaded 
-    var appLoader = function () {
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = "js/app.js"
-        document.getElementsByTagName("head")[0].appendChild(script);
-    }
-    </script>
+	<!-- Knockout.js -->
+	<script src="js/knockout-3.3.0.js"></script>
 
-    <!-- Knockout.js -->
-    <script src="js/knockout-3.3.0.js"></script>
-
-    <!-- Google Maps API --> 
-    <script async type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA813jCip3GPvTY7rWJAdnRXH_cch6SUfw&callback=appLoader">
-    </script>
-
-
+	<!-- Google Maps API --> 
+	<script async type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA813jCip3GPvTY7rWJAdnRXH_cch6SUfw&callback=appLoader">
+	</script>
   
 </body>
 
