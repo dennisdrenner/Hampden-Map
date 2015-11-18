@@ -2,6 +2,7 @@
 # Neighborhood Map Project for Udacity Nanodegree
 
 
+
 ## Purpose
 
 This project was a requirement for my Udacity.com Front-End Development Nanodegree and now serves as a portfolio piece. It allowed me to practice such skills as Ajax, using third party web APIS (Google Maps and Yelp), using Oauth authentication, and using Javascript libraries (Knockout.js, jQuery and jQuery UI are used in this project). 
