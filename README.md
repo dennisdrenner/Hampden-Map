@@ -19,7 +19,7 @@ These searches work at the same time, so if you type "Charm" into the searchbox,
 
 Clicking any pin on the map will call up information from the Yelp API and display that in the box below the listview. 
 
-## Colloboration 
+## Collaboration 
 
 Not sought. 
 
